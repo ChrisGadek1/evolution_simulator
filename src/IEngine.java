@@ -23,5 +23,5 @@ public interface IEngine {
 
     void removeDeadAnimals();
 
-    void breed();
+    void breeding();
 }

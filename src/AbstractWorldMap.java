@@ -14,7 +14,7 @@ public abstract class AbstractWorldMap {
 
     ArrayList<Integer> activeAxisForSavannahIndexes = new ArrayList<>();
 
-    Map<Vector2d, ArrayList<Animal>> breedMap = new HashMap<>();
+    HashSet<Cell> cellsReadyToBreed = new HashSet<>();
 
     XAxis jungleXAxis[];
 

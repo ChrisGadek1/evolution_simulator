@@ -100,7 +100,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
 
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
-                cellMap.put(new Vector2d(i,j), new Cell(new LinkedList<Animal>(),null, jungle.isCellCoordInJungle(i,j)));
+                cellMap.put(new Vector2d(i,j), new Cell(new LinkedList<Animal>(),null, jungle.isCellCoordInJungle(i,j),i,j));
                 if(jungle.isCellCoordInJungle(i,j) && usedAxisForJungle.get(j) == null){
                     XAxis jungleAxis = new XAxis(j,width);
                     for(int k = 0; k < jungle.getCellsWidth(); k++){

@@ -48,6 +48,7 @@ public class SimulationEngine implements IEngine{
                 default: move = null; break;
             }
             Vector2d newPosition = animal.getPosition().add(move.moveToVector());
+            Vector2d oldPosition = new Vector2d(animal.getPosition());
             if(map.canMoveTo(newPosition)){
                 map.getCell().get(newPosition).animals.add(animal);
                 map.getCell().get(animal.getPosition()).animals.remove(animal);
@@ -58,6 +59,13 @@ public class SimulationEngine implements IEngine{
                 map.revaluateEmptyCellsInformation(animal.getPosition(), newPosition,map.getJungle().isCellCoordInJungle(oldX,oldY)
                         ,map.getJungle().isCellCoordInJungle(newX,newY));
                 animal.move(move);
+                if(this.map.getCell().get(animal.getPosition()).animals.size() > 1){
+                    map.cellsReadyToBreed.add(this.map.getCell().get(animal.getPosition()));
+                }
+                if(this.map.getCell().get(oldPosition).animals.size() <= 1){
+                    Cell cellToRemove = map.getCell().get(oldPosition);
+                    map.cellsReadyToBreed.remove(cellToRemove);
+                }
             }
         }
     }
@@ -130,7 +138,8 @@ public class SimulationEngine implements IEngine{
     }
 
     @Override
-    public void breed() {
+    public void breeding() {
+        Iterator<Animal> animalListIterator = map.getAnimals().listIterator();
 
     }
 }
