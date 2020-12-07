@@ -1,9 +1,6 @@
-import java.util.Iterator;
-import java.util.LinkedList;
-
 public class Animal {
     private Vector2d position = new Vector2d(2,2);
-    private IWorldMap map;
+    private GrassField map;
 
     public int getEnergy() {
         return energy;
@@ -20,7 +17,7 @@ public class Animal {
     }
 
     private int maxEnergy;
-    private LinkedList<IPositionChangeObserver>  observers = new LinkedList<>();
+
 
     public Vector2d getPosition(){
         return this.position;
@@ -41,14 +38,20 @@ public class Animal {
     }
 
 
-    public Animal(IWorldMap map, Vector2d initialPosition, int maxEnergy){
+    public Animal(GrassField map, Vector2d initialPosition, int maxEnergy){
         this.map = map;
         this.position = initialPosition;
         this.maxEnergy = maxEnergy;
         this.setEnergy(maxEnergy);
     }
 
-    void eat(Grass grass, int grassEnergy, AbstractWorldMap worldMap){
+    void prepareBeforeAddToMap(int x, int y){
+        this.setPosition(new Vector2d(x,y));
+        map.animalPositions.add(this);
+        map.cellMap.get(this.getPosition()).animals.add(this);
+    }
+
+    void eat(Grass grass, int grassEnergy, GrassField worldMap){
         this.setEnergy(this.getEnergy() + grassEnergy);
         if(this.getEnergy() > this.maxEnergy) this.setEnergy(this.maxEnergy);
         if(grass != null){

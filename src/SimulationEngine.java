@@ -33,20 +33,7 @@ public class SimulationEngine implements IEngine{
         Iterator<Animal> animalPositionItr = map.animalPositions.listIterator();
         while(animalPositionItr.hasNext()){
             Animal animal = animalPositionItr.next();
-            MoveDirection move;
-            Random rand = new Random();
-            int random = rand.nextInt(8);
-            switch (random){
-                case 0: move = MoveDirection.TOP; break;
-                case 1: move = MoveDirection.TOPRIGHT; break;
-                case 2: move = MoveDirection.RIGHT; break;
-                case 3: move = MoveDirection.DOWNRIGHT; break;
-                case 4: move = MoveDirection.DOWN; break;
-                case 5: move = MoveDirection.DOWNLEFT; break;
-                case 6: move = MoveDirection.LEFT; break;
-                case 7: move = MoveDirection.TOPLEFT; break;
-                default: move = null; break;
-            }
+            MoveDirection move = MoveDirection.getRandomMove();
             Vector2d newPosition = animal.getPosition().add(move.moveToVector());
             Vector2d oldPosition = new Vector2d(animal.getPosition());
             if(map.canMoveTo(newPosition)){
@@ -59,13 +46,7 @@ public class SimulationEngine implements IEngine{
                 map.revaluateEmptyCellsInformation(animal.getPosition(), newPosition,map.getJungle().isCellCoordInJungle(oldX,oldY)
                         ,map.getJungle().isCellCoordInJungle(newX,newY));
                 animal.move(move);
-                if(this.map.getCell().get(animal.getPosition()).animals.size() > 1){
-                    map.cellsReadyToBreed.add(this.map.getCell().get(animal.getPosition()));
-                }
-                if(this.map.getCell().get(oldPosition).animals.size() <= 1){
-                    Cell cellToRemove = map.getCell().get(oldPosition);
-                    map.cellsReadyToBreed.remove(cellToRemove);
-                }
+                Cell.manageCellsBreedMap(oldPosition, newPosition,map);
             }
         }
     }
@@ -131,6 +112,7 @@ public class SimulationEngine implements IEngine{
                 int oldX = animal.getPosition().getX();
                 int oldY = animal.getPosition().getY();
                 map.revaluateEmptyCellsInformation(animal.getPosition(), null, map.getJungle().isCellCoordInJungle(oldX,oldY),false);
+                Cell.manageCellsBreedMap(new Vector2d(oldX, oldY),null, map);
                 animalIterator.remove();
             }
         }
@@ -139,7 +121,8 @@ public class SimulationEngine implements IEngine{
 
     @Override
     public void breeding() {
-        Iterator<Animal> animalListIterator = map.getAnimals().listIterator();
-
+        for (Cell cell: map.cellsReadyToBreed){
+            cell.breed();
+        }
     }
 }

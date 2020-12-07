@@ -19,7 +19,7 @@ public class GraphicPanel extends JPanel implements ActionListener {
     GrassField grassField;
     MapVisualizer visualizer;
 
-    Timer tm = new Timer(200, this);
+    Timer tm = new Timer(5, this);
 
 
     public GraphicPanel(int windowSize,
@@ -74,6 +74,7 @@ public class GraphicPanel extends JPanel implements ActionListener {
         this.visualizer.drawGrass(g2d);
         this.visualizer.drawAnimals(g2d);
         this.engine.moveAnimals();
+        this.engine.breeding();
         tm.start();
     }
 

@@ -5,12 +5,12 @@ import java.util.LinkedList;
 
 public class MapVisualizer {
 
-    IWorldMap map;
+    GrassField map;
     int width;
     int height;
     int cellSize;
 
-    MapVisualizer(IWorldMap world, int width, int height){
+    MapVisualizer(GrassField world, int width, int height){
         this.map = world;
         this.width = width;
         this.height = height;

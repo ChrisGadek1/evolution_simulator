@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class GrassField extends AbstractWorldMap implements IWorldMap {
+public class GrassField{
 
     private int grassQuantity;
     private int width;
@@ -17,6 +17,82 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
         return width;
     }
 
+    Map<Vector2d, Cell> cellMap = new LinkedHashMap<>();
+    LinkedList<Animal> animalPositions = new LinkedList<Animal>();
+
+    Map<Vector2d, Grass> grassesMap = new HashMap<>();
+
+    Map<Integer, XAxis> usedAxisForJungle = new HashMap<>();
+
+    Map<Integer, XAxis> usedAxisForSavannah = new HashMap<>();
+
+    ArrayList<Integer> activeAxisForJungleIndexes = new ArrayList<>();
+
+    ArrayList<Integer> activeAxisForSavannahIndexes = new ArrayList<>();
+
+    HashSet<Cell> cellsReadyToBreed = new HashSet<>();
+
+    XAxis jungleXAxis[];
+
+    XAxis savannahXAxis[];
+
+    public boolean isOccupied(Vector2d position) {
+        Object tmp = this.objectAt(position);
+        if(tmp == null) return false;
+        else return true;
+    }
+
+
+    void revaluateEmptyCellsInformation(Vector2d oldPosition, Vector2d newPosition, boolean oldJungle, boolean newJungle){
+        if(oldPosition != null){
+            if(oldJungle){
+                Cell currentCell = cellMap.get(new Vector2d(oldPosition.getX(),oldPosition.getY()));
+                if(currentCell.animals.size() == 0 && currentCell.grass == null){
+                    this.jungleXAxis[oldPosition.getY()].freePositions.add(oldPosition.getX());
+                    if(this.usedAxisForJungle.get(oldPosition.getY()) == null){
+                        this.usedAxisForJungle.put(oldPosition.getY(), jungleXAxis[oldPosition.getY()]);
+                        this.activeAxisForJungleIndexes.add(oldPosition.getY());
+                    }
+                }
+            }
+            else{
+                Cell currentCell = cellMap.get(new Vector2d(oldPosition.getX(),oldPosition.getY()));
+                if(currentCell.animals.size() == 0 && currentCell.grass == null){
+                    this.savannahXAxis[oldPosition.getY()].freePositions.add(oldPosition.getX());
+                    if(this.usedAxisForSavannah.get(oldPosition.getY()) == null){
+                        this.usedAxisForSavannah.put(oldPosition.getY(), savannahXAxis[oldPosition.getY()]);
+                        this.activeAxisForSavannahIndexes.add(oldPosition.getY());
+                    }
+                }
+            }
+
+        }
+        if(newPosition != null){
+            if(newJungle){
+                ArrayList<Integer> freePositions =  this.jungleXAxis[newPosition.getY()].freePositions;
+                Cell currentCell = cellMap.get(new Vector2d(newPosition.getX(),newPosition.getY()));
+                if(currentCell.animals.size() != 0 || currentCell.grass != null){
+                    freePositions.remove((Object)newPosition.getX());
+                    if(this.usedAxisForJungle.get(newPosition.getY()) != null && this.usedAxisForJungle.get(newPosition.getY()).freePositions.size() == 0){
+                        this.usedAxisForJungle.remove(newPosition.getY());
+                        this.activeAxisForJungleIndexes.remove((Object)newPosition.getY());
+                    }
+                }
+            }
+            else{
+                ArrayList<Integer> freePositions =  this.savannahXAxis[newPosition.getY()].freePositions;
+                Cell currentCell = cellMap.get(new Vector2d(newPosition.getX(),newPosition.getY()));
+                if(currentCell.animals.size() != 0 || currentCell.grass != null){
+                    freePositions.remove((Object)newPosition.getX());
+                    if(this.usedAxisForSavannah.get(newPosition.getY()) != null && this.usedAxisForSavannah.get(newPosition.getY()).freePositions.size() == 0){
+                        this.usedAxisForSavannah.remove(newPosition.getY());
+                        this.activeAxisForSavannahIndexes.remove((Object)newPosition.getY());
+                    }
+                }
+            }
+        }
+    }
+    
 
     int[] getRandomFreeCoordinatesInJungle(){
         int randomIndex = this.random.nextInt(this.activeAxisForJungleIndexes.size());
@@ -44,9 +120,8 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
     public boolean placeAnimalInRandomPlaceInJungle(Animal animal){
         if(this.activeAxisForJungleIndexes.size() > 0){
             int randomCoords[] = getRandomFreeCoordinatesInJungle();
-            animal.setPosition(new Vector2d(randomCoords[0],randomCoords[1]));
-            animalPositions.add(animal);
-            cellMap.get(animal.getPosition()).animals.add(animal);
+            animal.prepareBeforeAddToMap(randomCoords[0], randomCoords[1]);
+            Cell.manageCellsBreedMap(null, new Vector2d(randomCoords[0],randomCoords[1]), this);
             revaluateEmptyCellsInformation(null, animal.getPosition(),false,true);
             return true;
         }
@@ -100,7 +175,7 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
 
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
-                cellMap.put(new Vector2d(i,j), new Cell(new LinkedList<Animal>(),null, jungle.isCellCoordInJungle(i,j),i,j));
+                cellMap.put(new Vector2d(i,j), new Cell(new LinkedList<Animal>(),null, jungle.isCellCoordInJungle(i,j),i,j, this));
                 if(jungle.isCellCoordInJungle(i,j) && usedAxisForJungle.get(j) == null){
                     XAxis jungleAxis = new XAxis(j,width);
                     for(int k = 0; k < jungle.getCellsWidth(); k++){
@@ -125,35 +200,34 @@ public class GrassField extends AbstractWorldMap implements IWorldMap {
         this.height = height;
     }
 
-    @Override
+
     public boolean canMoveTo(Vector2d position) {
         if(position.getX() >= 0 && position.getX() < this.width && position.getY() >= 0 && position.getY() < this.height) return true;
         else return false;
     }
 
-    @Override
+
     public Object objectAt(Vector2d position) {
         if(cellMap.get(position).animals.size() != 0) return cellMap.get(position).animals;
         if(cellMap.get(position).grass != null) return cellMap.get(position).grass;
         return null;
     }
 
-    @Override
+
     public Map<Vector2d, Cell> getCell() {
         return this.cellMap;
     }
 
-    @Override
+
     public LinkedList<Animal> getAnimals() {
         return this.animalPositions;
     }
 
-    @Override
+
     public Map<Vector2d, Grass> getGrassesMap() {
         return this.grassesMap;
     }
 
-    @Override
     public Jungle getJungle() {
         return this.jungle;
     }
