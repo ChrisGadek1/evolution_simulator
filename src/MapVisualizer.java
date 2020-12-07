@@ -51,7 +51,7 @@ public class MapVisualizer {
         int beginY = jungle.computeStartYPos();
         int width = jungle.getWidthInPixels();
         int height = jungle.getHeightInPixels();
-        Rectangle2D.Double rectangle = new Rectangle2D.Double(beginY,beginX,height,width);
+        Rectangle2D.Double rectangle = new Rectangle2D.Double(beginX,beginY,width,height);
         g.fill(rectangle);
     }
 

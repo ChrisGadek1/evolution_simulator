@@ -19,7 +19,7 @@ public class GraphicPanel extends JPanel implements ActionListener {
     GrassField grassField;
     MapVisualizer visualizer;
 
-    Timer tm = new Timer(5, this);
+    Timer tm = new Timer(0, this);
 
 
     public GraphicPanel(int windowSize,
@@ -45,8 +45,8 @@ public class GraphicPanel extends JPanel implements ActionListener {
         this.moveEnergy = moveEnergy;
         this.cellSize = width/cellsWidth;
         this.jungleRatio = jungleRatio/(jungleRatio+1);
-        this.jungle = new Jungle((int)(cellsHeight*Math.sqrt(this.jungleRatio)),
-                (int)(cellsWidth*Math.sqrt(this.jungleRatio)),
+        this.jungle = new Jungle((int)(cellsWidth*Math.sqrt(this.jungleRatio)),
+                (int)(cellsHeight*Math.sqrt(this.jungleRatio)),
                 cellsWidth, cellsHeight, this.cellSize);
         this.grassField = new GrassField(10, cellsWidth, cellsHeight, jungle);
         this.engine = new SimulationEngine(grassField,
@@ -58,7 +58,7 @@ public class GraphicPanel extends JPanel implements ActionListener {
 
         setPreferredSize(new Dimension(this.width,this.height));
         setBackground(new Color(207, 250, 100));
-        this.engine.initSimulation(15);
+        this.engine.initSimulation(35);
         this.visualizer = new MapVisualizer(this.grassField, this.width, this.height);
     }
 

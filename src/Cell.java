@@ -80,7 +80,7 @@ public class Cell {
         }
     }
 
-    void breed(){
+    Vector2d breed(){
         animals.sort(new AnimalsComparator());
         Animal animal1 = animals.get(0);
         Animal animal2 = animals.get(1);
@@ -92,13 +92,15 @@ public class Cell {
             animal1.setEnergy(animal1.getEnergy()/2);
             animal2.setEnergy(animal2.getEnergy()/2);
             Vector2d newAnimalPosition = new Vector2d(newAnimalCell.x, newAnimalCell.y);
-            Animal child = new Animal(map, newAnimalPosition, animal1.getMaxEnergy());
+            int[] genome = map.getGenomeGenerator().generateChildGenome(animal1, animal2);
+            Animal child = new Animal(map, newAnimalPosition, animal1.getMaxEnergy(), genome);
             child.setEnergy(child.getMaxEnergy()/2);
             int newX = newAnimalPosition.getX();
             int newY = newAnimalPosition.getY();
             child.prepareBeforeAddToMap(newX, newY);
-            Cell.manageCellsBreedMap(null, newAnimalPosition, map);
             map.revaluateEmptyCellsInformation(null, child.getPosition(),false, map.getJungle().isCellCoordInJungle(newX, newY));
+            return new Vector2d(newAnimalCell.x, newAnimalCell.y);
         }
+        else return null;
     }
 }

@@ -1,6 +1,9 @@
 public class Animal {
     private Vector2d position = new Vector2d(2,2);
     private GrassField map;
+    private int energy;
+    private int maxEnergy;
+    private MoveDirection moveDirection;
 
     public int getEnergy() {
         return energy;
@@ -10,19 +13,15 @@ public class Animal {
         this.energy = energy;
     }
 
-    private int energy;
-
     public int getMaxEnergy() {
         return maxEnergy;
     }
 
-    private int maxEnergy;
+    public int[] genome;
 
     public MoveDirection getMoveDirection() {
         return moveDirection;
     }
-
-    private MoveDirection moveDirection;
 
     public Vector2d getPosition(){
         return this.position;
@@ -33,7 +32,8 @@ public class Animal {
     }
 
     public MoveDirection chooseNewDirection(){
-        return MoveDirection.getRandomMove();
+        return MoveDirection.mapIntToMove(genome[map.random.nextInt(32)]);
+
     }
 
     public void setMoveDirection(MoveDirection moveDirection){
@@ -52,18 +52,23 @@ public class Animal {
     }
 
 
-    public Animal(GrassField map, Vector2d initialPosition, int maxEnergy){
+    public Animal(GrassField map, Vector2d initialPosition, int maxEnergy, int[] genome){
         this.map = map;
         this.position = initialPosition;
         this.maxEnergy = maxEnergy;
         this.setEnergy(maxEnergy);
         this.moveDirection = MoveDirection.getRandomMove();
+        this.genome = genome;
     }
 
     void prepareBeforeAddToMap(int x, int y){
         this.setPosition(new Vector2d(x,y));
         map.animalPositions.add(this);
-        map.cellMap.get(this.getPosition()).animals.add(this);
+        try{
+            map.cellMap.get(this.getPosition()).animals.add(this);
+        }catch (Exception e){
+            System.out.println("nie ma takiej komórki: "+this.getPosition());
+        }
     }
 
     void eat(Grass grass, int grassEnergy, GrassField worldMap){

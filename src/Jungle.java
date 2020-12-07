@@ -25,7 +25,7 @@ public class Jungle {
     //describes the first Y coordinate, where jungle begins
     private int beginCellY;
 
-    public Jungle(int cellsWidth, int cellsHeight, int wholeMapCellsHeight, int wholeMapCellsWidth, int cellSize) {
+    public Jungle(int cellsWidth, int cellsHeight, int wholeMapCellsWidth, int wholeMapCellsHeight, int cellSize) {
         this.cellsWidth = cellsWidth;
         this.cellsHeight = cellsHeight;
         this.wholeMapCellsHeight = wholeMapCellsHeight;
@@ -51,15 +51,9 @@ public class Jungle {
         return cellsHeight*cellSize;
     }
 
-    public int getFirstXCoord(){
-        return beginCellX;
-    }
-
-    public int getFirstYCoord(){
-        return beginCellY;
-    }
 
     public boolean isCellCoordInJungle(int x, int y){
+
         return x >= this.beginCellX && x < this.beginCellX + cellsWidth && y >= this.beginCellY && y < this.beginCellY + cellsHeight;
     }
 }

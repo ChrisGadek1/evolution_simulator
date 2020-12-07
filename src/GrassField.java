@@ -7,7 +7,15 @@ public class GrassField{
     private int height;
     private Jungle jungle;
 
+    public GenomeGenerator getGenomeGenerator() {
+        return genomeGenerator;
+    }
+
+    private GenomeGenerator genomeGenerator;
+
     Random random;
+
+
 
     int getHeight(){
         return height;
@@ -172,6 +180,7 @@ public class GrassField{
         this.jungleXAxis = new XAxis[height];
         this.savannahXAxis = new XAxis[height];
         this.jungle = jungle;
+        this.genomeGenerator = new GenomeGenerator(new Random());
 
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){

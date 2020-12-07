@@ -1,4 +1,5 @@
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
@@ -90,8 +91,9 @@ public class SimulationEngine implements IEngine{
     public void initSimulation(int animalInitNumber) {
         Random rand = new Random();
         for(int i = 0; i < animalInitNumber; i++){
+            int[] genome = this.map.getGenomeGenerator().generateRandomGenome();
             this.map.placeAnimalInRandomPlaceInJungle(new Animal(this.map, new Vector2d(rand.nextInt(cellsWidth),
-                    rand.nextInt(cellsHeight)), maxEnergy));
+                    rand.nextInt(cellsHeight)), maxEnergy, genome));
         }
     }
 
@@ -122,8 +124,13 @@ public class SimulationEngine implements IEngine{
 
     @Override
     public void breeding() {
+        LinkedList<Vector2d> newAnimalPositions = new LinkedList<>();
         for (Cell cell: map.cellsReadyToBreed){
-            cell.breed();
+            Vector2d newPosition = cell.breed();
+            if(newPosition != null) newAnimalPositions.push(newPosition);
+        }
+        for(Vector2d newAnimalPosition: newAnimalPositions){
+            Cell.manageCellsBreedMap(null, newAnimalPosition, map);
         }
     }
 }
