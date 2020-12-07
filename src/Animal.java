@@ -18,6 +18,11 @@ public class Animal {
 
     private int maxEnergy;
 
+    public MoveDirection getMoveDirection() {
+        return moveDirection;
+    }
+
+    private MoveDirection moveDirection;
 
     public Vector2d getPosition(){
         return this.position;
@@ -27,14 +32,23 @@ public class Animal {
         this.position = position;
     }
 
+    public MoveDirection chooseNewDirection(){
+        return MoveDirection.getRandomMove();
+    }
 
-    public boolean move(MoveDirection direction){
-        Vector2d tmp = this.position.add(direction.moveToVector());
+    public void setMoveDirection(MoveDirection moveDirection){
+        this.moveDirection = moveDirection;
+    }
+
+    public boolean move(){
+        Vector2d tmp = this.position.add(this.moveDirection.moveToVector());
         if(this.map.canMoveTo(tmp)){
             this.position = tmp;
             return true;
         }
-        else return false;
+        else{
+            return false;
+        }
     }
 
 
@@ -43,6 +57,7 @@ public class Animal {
         this.position = initialPosition;
         this.maxEnergy = maxEnergy;
         this.setEnergy(maxEnergy);
+        this.moveDirection = MoveDirection.getRandomMove();
     }
 
     void prepareBeforeAddToMap(int x, int y){

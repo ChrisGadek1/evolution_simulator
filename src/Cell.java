@@ -37,7 +37,7 @@ public class Cell {
 
     private LinkedList<MoveDirection> getMovesToRandomPotentialNeighbourCollection(){
         LinkedList<MoveDirection> potentialMoveToTheFreeNeighbour = new LinkedList<>();
-        MoveDirection firstMove = MoveDirection.TOP;
+        MoveDirection firstMove = MoveDirection.STRAIGHT_ON;
         for(int i = 0; i < 8; i++){
             potentialMoveToTheFreeNeighbour.push(firstMove);
             firstMove = firstMove.getNextMove();

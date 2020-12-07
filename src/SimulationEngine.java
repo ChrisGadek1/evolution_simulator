@@ -33,7 +33,7 @@ public class SimulationEngine implements IEngine{
         Iterator<Animal> animalPositionItr = map.animalPositions.listIterator();
         while(animalPositionItr.hasNext()){
             Animal animal = animalPositionItr.next();
-            MoveDirection move = MoveDirection.getRandomMove();
+            MoveDirection move = animal.chooseNewDirection();
             Vector2d newPosition = animal.getPosition().add(move.moveToVector());
             Vector2d oldPosition = new Vector2d(animal.getPosition());
             if(map.canMoveTo(newPosition)){
@@ -45,7 +45,8 @@ public class SimulationEngine implements IEngine{
                 int newY = newPosition.getY();
                 map.revaluateEmptyCellsInformation(animal.getPosition(), newPosition,map.getJungle().isCellCoordInJungle(oldX,oldY)
                         ,map.getJungle().isCellCoordInJungle(newX,newY));
-                animal.move(move);
+                animal.setMoveDirection(move);
+                animal.move();
                 Cell.manageCellsBreedMap(oldPosition, newPosition,map);
             }
         }
