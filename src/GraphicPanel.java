@@ -5,8 +5,19 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 
-public class GraphicPanel extends JPanel implements ActionListener {
+public class GraphicPanel extends JPanel {
     private double jungleRatio;
+
+    @Override
+    public int getHeight() {
+        return height;
+    }
+
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
     private int height;
     private int width;
     private int grassEnergy;
@@ -19,7 +30,13 @@ public class GraphicPanel extends JPanel implements ActionListener {
     GrassField grassField;
     MapVisualizer visualizer;
 
-    Timer tm = new Timer(0, this);
+    public Timer getTimer() {
+        return tm;
+    }
+
+    private Timer tm = new Timer(30, e -> {
+        repaint();
+    });
 
 
     public GraphicPanel(int windowSize,
@@ -75,11 +92,6 @@ public class GraphicPanel extends JPanel implements ActionListener {
         this.visualizer.drawAnimals(g2d);
         this.engine.moveAnimals();
         this.engine.breeding();
-        tm.start();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        repaint();
-    }
 }

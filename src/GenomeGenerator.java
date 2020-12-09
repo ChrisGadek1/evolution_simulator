@@ -16,6 +16,7 @@ public class GenomeGenerator {
             if(gensNumberMap.get(i) == 0){
                 gensNumberMap.put(i, 1);
                 int lastKey = gensNumberMap.lastKey();
+                if(gensNumberMap.get(lastKey) < 2) lastKey--;
                 gensNumberMap.put(lastKey, gensNumberMap.get(lastKey)-1);
             }
         }
@@ -41,8 +42,8 @@ public class GenomeGenerator {
     }
 
     public int[] generateChildGenome(Animal animal1, Animal animal2){
-        int firstCut = random.nextInt(32);
-        int secondCut = random.nextInt(32);
+        int firstCut = random.nextInt(31);
+        int secondCut = random.nextInt(31);
         int[] genome = new int[32];
         for(int i = 0; i < Math.min(firstCut,secondCut); i++){
             genome[i] = animal1.genome[i];
