@@ -3,7 +3,9 @@ public class Animal {
     private GrassField map;
     private int energy;
     private int maxEnergy;
+    private int dayOfBirth;
     private MoveDirection moveDirection;
+
 
     public int getEnergy() {
         return energy;
@@ -15,6 +17,10 @@ public class Animal {
 
     public int getMaxEnergy() {
         return maxEnergy;
+    }
+
+    public int getDayOfBirth() {
+        return dayOfBirth;
     }
 
     public int[] genome;
@@ -33,7 +39,6 @@ public class Animal {
 
     public MoveDirection chooseNewDirection(){
         return MoveDirection.mapIntToMove(genome[map.random.nextInt(32)]);
-
     }
 
     public void setMoveDirection(MoveDirection moveDirection){
@@ -59,6 +64,7 @@ public class Animal {
         this.setEnergy(maxEnergy);
         this.moveDirection = MoveDirection.getRandomMove();
         this.genome = genome;
+        this.dayOfBirth = map.getDay();
     }
 
     void prepareBeforeAddToMap(int x, int y){

@@ -1,23 +1,21 @@
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Frame extends JFrame {
     public Frame() {
         super("Evolution Simulator");
-        int windowSize = 750;
+        int windowSize = 650;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
-        setResizable(false);
+        setResizable(true);
 
         setLocation(200,200);
         JPanel graphics1 = new GraphicPanel(windowSize-100,0.3, 40, 50, 20, 20, 1);
         graphics1.setPreferredSize(new Dimension(graphics1.getWidth(), graphics1.getHeight()));
-        setSize(new Dimension(graphics1.getWidth()+100, graphics1.getHeight()+200));
+        setSize(new Dimension(graphics1.getWidth()+100, graphics1.getHeight()+250));
         EventObserver eventObserver = new EventObserver((GraphicPanel) graphics1);
+
+
 
         JPanel mainContainer = new JPanel();
         mainContainer.setLayout(new FlowLayout());
@@ -37,7 +35,7 @@ public class Frame extends JFrame {
         sliderContainer.add(slider);
 
         JLabel sliderLabel = new JLabel();
-        sliderLabel.setText("Change the FPS of the animation");
+        sliderLabel.setText("Change the speed of the animation");
         sliderContainer.add(sliderLabel);
 
         //add listeners to Buttons
@@ -56,8 +54,68 @@ public class Frame extends JFrame {
         buttonContainer.add(startButton);
         buttonContainer.add(pauseButton);
         buttonContainer.add(sliderContainer);
+
+        JPanel statisticsContainer = new JPanel();
+
+        JPanel animalStatisticsContainer = new JPanel();
+        JLabel animalNumberLabel = new JLabel("Ilość zwierząt");
+        JLabel animalNumber = new JLabel("");
+
+        JPanel grassStatisticsContainer = new JPanel();
+        JLabel grassNumberLabel = new JLabel("Ilość trawy");
+        JLabel grassNumber = new JLabel("");
+
+        JPanel averageAnimalEnergyContainer = new JPanel();
+        JLabel averageAnimalEnergyLabel = new JLabel("średnia ilość energi");
+        JLabel averageAnimalEnergyNumber = new JLabel();
+
+        JPanel averageLifeLengthContainer = new JPanel();
+        JLabel averageLifeLengthLabel = new JLabel("średnia długość życia");
+        JLabel averageLifeLengthNumber = new JLabel("-");
+
+        statisticsContainer.setLayout(new BoxLayout(statisticsContainer, BoxLayout.Y_AXIS));
+        statisticsContainer.setAlignmentX(Component.LEFT_ALIGNMENT);
+        animalStatisticsContainer.setLayout(new FlowLayout());
+        grassStatisticsContainer.setLayout(new FlowLayout());
+        averageAnimalEnergyContainer.setLayout(new FlowLayout());
+        averageLifeLengthContainer.setLayout(new FlowLayout());
+
+        animalStatisticsContainer.add(animalNumberLabel);
+        animalStatisticsContainer.add(animalNumber);
+        animalStatisticsContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+        grassStatisticsContainer.add(grassNumberLabel);
+        grassStatisticsContainer.add(grassNumber);
+        grassStatisticsContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+        averageAnimalEnergyContainer.add(averageAnimalEnergyLabel);
+        averageAnimalEnergyContainer.add(averageAnimalEnergyNumber);
+        averageAnimalEnergyContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+        averageLifeLengthContainer.add(averageLifeLengthLabel);
+        averageLifeLengthContainer.add(averageLifeLengthNumber);
+        averageLifeLengthContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+        statisticsContainer.add(animalStatisticsContainer);
+        statisticsContainer.add(grassStatisticsContainer);
+        statisticsContainer.add(averageAnimalEnergyContainer);
+        statisticsContainer.add(averageLifeLengthContainer);
+        statisticsContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAnimalNumberLabel(animalNumber);
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setGrassNumberLabel(grassNumber);
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAverageAnimalEnergyLabel(averageAnimalEnergyNumber);
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAverageLifeLength(averageLifeLengthNumber);
+
+
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentNumberOfGrass();
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentNumberOfAnimals();
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentAverageAnimalEnergy();
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentAverageLifeLength();
+
         mapContainer.add(buttonContainer);
-        mainContainer.add(mapContainer);
+        mapContainer.add(statisticsContainer);
         mainContainer.add(mapContainer);
         this.add(mainContainer);
     }

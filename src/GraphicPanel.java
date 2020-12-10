@@ -83,15 +83,24 @@ public class GraphicPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         super.paintComponent(g);
+        if(this.getTimer().isRunning()) {
+            this.grassField.setDay(this.grassField.getDay() + 1);
+            this.engine.removeDeadAnimals();
+            this.engine.animalsEatGrass();
+            this.engine.loseEnergy();
+            this.engine.growGrass();
+        }
         this.visualizer.drawJungle(g2d, this.jungle);
-        this.engine.removeDeadAnimals();
-        this.engine.animalsEatGrass();
-        this.engine.loseEnergy();
-        this.engine.growGrass();
         this.visualizer.drawGrass(g2d);
         this.visualizer.drawAnimals(g2d);
-        this.engine.moveAnimals();
-        this.engine.breeding();
+        if(this.getTimer().isRunning()){
+            this.engine.moveAnimals();
+            this.engine.breeding();
+            this.grassField.getStatisticsCollector().setCurrentNumberOfAnimals();
+            this.grassField.getStatisticsCollector().setCurrentNumberOfGrass();
+            this.grassField.getStatisticsCollector().setCurrentAverageAnimalEnergy();
+            this.grassField.getStatisticsCollector().setCurrentAverageLifeLength();
+        }
     }
 
 }

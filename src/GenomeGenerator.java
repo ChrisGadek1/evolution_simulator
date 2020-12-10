@@ -12,15 +12,14 @@ public class GenomeGenerator {
         for(int i = 0; i < 32; i++){
             gensNumberMap.put(genome[i], gensNumberMap.get(genome[i])+1);
         }
+        int lastKey = gensNumberMap.lastKey();
         for(int i = 0; i < 8; i++){
             if(gensNumberMap.get(i) == 0){
                 gensNumberMap.put(i, 1);
-                int lastKey = gensNumberMap.lastKey();
                 if(gensNumberMap.get(lastKey) < 2) lastKey--;
                 gensNumberMap.put(lastKey, gensNumberMap.get(lastKey)-1);
             }
         }
-        System.out.println(gensNumberMap);
         int k = 0;
         for(int i = 0; i < 8 ; i++){
             for(int j = 0; j < gensNumberMap.get(i); j++){

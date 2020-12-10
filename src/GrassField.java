@@ -6,6 +6,8 @@ public class GrassField{
     private int width;
     private int height;
     private Jungle jungle;
+    private StatisticsCollector statisticsCollector;
+    private int day = 0;
 
     public GenomeGenerator getGenomeGenerator() {
         return genomeGenerator;
@@ -23,6 +25,18 @@ public class GrassField{
 
     int getWidth(){
         return width;
+    }
+
+    StatisticsCollector getStatisticsCollector(){
+        return this.statisticsCollector;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 
     Map<Vector2d, Cell> cellMap = new LinkedHashMap<>();
@@ -181,6 +195,7 @@ public class GrassField{
         this.savannahXAxis = new XAxis[height];
         this.jungle = jungle;
         this.genomeGenerator = new GenomeGenerator(new Random());
+        this.statisticsCollector = new StatisticsCollector(this);
 
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
@@ -250,7 +265,5 @@ public class GrassField{
        int result[] =  {0,0,width,height};
        return result;
     }
-
-
 
 }

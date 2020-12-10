@@ -111,6 +111,9 @@ public class SimulationEngine implements IEngine{
         while(animalIterator.hasNext()){
             Animal animal = animalIterator.next();
             if(animal.getEnergy() == 0){
+                StatisticsCollector stats = map.getStatisticsCollector();
+                stats.setTotalLifeLength(stats.getTotalLifeLength() + map.getDay() - animal.getDayOfBirth());
+                stats.setDeadAnimals(stats.getDeadAnimals()+1);
                 map.getCell().get(animal.getPosition()).animals.remove(animal);
                 int oldX = animal.getPosition().getX();
                 int oldY = animal.getPosition().getY();
@@ -119,7 +122,6 @@ public class SimulationEngine implements IEngine{
                 animalIterator.remove();
             }
         }
-
     }
 
     @Override
