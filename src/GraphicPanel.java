@@ -62,10 +62,7 @@ public class GraphicPanel extends JPanel {
         this.moveEnergy = moveEnergy;
         this.cellSize = width/cellsWidth;
         this.jungleRatio = jungleRatio/(jungleRatio+1);
-        this.jungle = new Jungle((int)(cellsWidth*Math.sqrt(this.jungleRatio)),
-                (int)(cellsHeight*Math.sqrt(this.jungleRatio)),
-                cellsWidth, cellsHeight, this.cellSize);
-        this.grassField = new GrassField(10, cellsWidth, cellsHeight, jungle);
+        this.grassField = new GrassField(10, cellsWidth, cellsHeight, this.jungleRatio);
         this.engine = new SimulationEngine(grassField,
                                            grassEnergy,
                                             maxEnergy,
@@ -75,7 +72,7 @@ public class GraphicPanel extends JPanel {
 
         setPreferredSize(new Dimension(this.width,this.height));
         setBackground(new Color(207, 250, 100));
-        this.engine.initSimulation(35);
+        this.engine.initSimulation(10);
         this.visualizer = new MapVisualizer(this.grassField, this.width, this.height);
     }
 
@@ -90,7 +87,7 @@ public class GraphicPanel extends JPanel {
             this.engine.loseEnergy();
             this.engine.growGrass();
         }
-        this.visualizer.drawJungle(g2d, this.jungle);
+        this.visualizer.drawBiomes(g2d);
         this.visualizer.drawGrass(g2d);
         this.visualizer.drawAnimals(g2d);
         if(this.getTimer().isRunning()){

@@ -62,7 +62,8 @@ public class StatisticsCollector {
         for(Animal animal: mapAnimalList){
             result += animal.getEnergy();
         }
-        this.averageAnimalEnergy.setText(String.valueOf(result/mapAnimalList.size()));
+        if(mapAnimalList.size() != 0) this.averageAnimalEnergy.setText(String.valueOf(result/mapAnimalList.size()));
+        else this.averageAnimalEnergy.setText("0");
     }
 
     public void setCurrentAverageLifeLength(){

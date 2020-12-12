@@ -45,14 +45,15 @@ public class MapVisualizer {
         }
    }
 
-    void drawJungle(Graphics2D g, Jungle jungle){
-        g.setColor(new Color(19, 161, 29));
-        int beginX = jungle.computeStartXPos();
-        int beginY = jungle.computeStartYPos();
-        int width = jungle.getWidthInPixels();
-        int height = jungle.getHeightInPixels();
-        Rectangle2D.Double rectangle = new Rectangle2D.Double(beginX,beginY,width,height);
-        g.fill(rectangle);
+   void drawBiomes(Graphics2D g){
+        for(int i = 0; i < map.getWidth(); i++){
+            for (int j = 0; i < map.getHeight(); i++){
+                Vector2d position = new Vector2d(i, j);
+                g.setColor(map.cellMap.get(position).getBiome().getColor());
+                Rectangle2D.Double rectangle = new Rectangle2D.Double(i*cellSize, j*cellSize, cellSize, cellSize);
+                g.fill(rectangle);
+            }
+        }
     }
 
 }

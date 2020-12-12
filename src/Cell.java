@@ -5,16 +5,26 @@ import java.util.Objects;
 public class Cell {
     public LinkedList<Animal> animals;
 
+    public AbstractWorldBiome getBiome() {
+        return biome;
+    }
+
+    public void setBiome(AbstractWorldBiome biome) {
+        this.biome = biome;
+    }
+
+    public AbstractWorldBiome biome;
+
     int x;
     int y;
     Grass grass;
-    boolean jungle;
     GrassField map;
 
-    Cell(LinkedList<Animal> animals, Grass grass, boolean jungle, int x, int y, GrassField map){
+
+
+    Cell(LinkedList<Animal> animals, Grass grass, int x, int y, GrassField map){
         this.animals = animals;
         this.grass = grass;
-        this.jungle = jungle;
         this.x = x;
         this.y = y;
         this.map = map;
@@ -98,7 +108,7 @@ public class Cell {
             int newX = newAnimalPosition.getX();
             int newY = newAnimalPosition.getY();
             child.prepareBeforeAddToMap(newX, newY);
-            map.revaluateEmptyCellsInformation(null, child.getPosition(),false, map.getJungle().isCellCoordInJungle(newX, newY));
+            map.revaluateEmptyCellsInformation(null, child.getPosition());
             return new Vector2d(newAnimalCell.x, newAnimalCell.y);
         }
         else return null;

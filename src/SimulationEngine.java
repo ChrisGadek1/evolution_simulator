@@ -40,12 +40,7 @@ public class SimulationEngine implements IEngine{
             if(map.canMoveTo(newPosition)){
                 map.getCell().get(newPosition).animals.add(animal);
                 map.getCell().get(animal.getPosition()).animals.remove(animal);
-                int oldX = animal.getPosition().getX();
-                int oldY = animal.getPosition().getY();
-                int newX = newPosition.getX();
-                int newY = newPosition.getY();
-                map.revaluateEmptyCellsInformation(animal.getPosition(), newPosition,map.getJungle().isCellCoordInJungle(oldX,oldY)
-                        ,map.getJungle().isCellCoordInJungle(newX,newY));
+                map.revaluateEmptyCellsInformation(animal.getPosition(), newPosition);
                 animal.setMoveDirection(move);
                 animal.move();
                 Cell.manageCellsBreedMap(oldPosition, newPosition,map);
@@ -83,8 +78,8 @@ public class SimulationEngine implements IEngine{
 
     @Override
     public void growGrass() {
-        this.map.addGrassToRandomPlaceInSavannah(new Grass(new Vector2d(0,0)));
-        this.map.addGrassToRandomPlaceInJungle(new Grass(new Vector2d(0,0)));
+        this.map.getJungle().placeWorldElementInBiomeInRandomPlace(new Grass(new Vector2d(0,0), this.map));
+        this.map.getSavannah().placeWorldElementInBiomeInRandomPlace(new Grass(new Vector2d(0,0), this.map));
     }
 
     @Override
@@ -92,7 +87,7 @@ public class SimulationEngine implements IEngine{
         Random rand = new Random();
         for(int i = 0; i < animalInitNumber; i++){
             int[] genome = this.map.getGenomeGenerator().generateRandomGenome();
-            this.map.placeAnimalInRandomPlaceInJungle(new Animal(this.map, new Vector2d(rand.nextInt(cellsWidth),
+            this.map.getJungle().placeWorldElementInBiomeInRandomPlace(new Animal(this.map, new Vector2d(rand.nextInt(cellsWidth),
                     rand.nextInt(cellsHeight)), maxEnergy, genome));
         }
     }
@@ -117,7 +112,7 @@ public class SimulationEngine implements IEngine{
                 map.getCell().get(animal.getPosition()).animals.remove(animal);
                 int oldX = animal.getPosition().getX();
                 int oldY = animal.getPosition().getY();
-                map.revaluateEmptyCellsInformation(animal.getPosition(), null, map.getJungle().isCellCoordInJungle(oldX,oldY),false);
+                map.revaluateEmptyCellsInformation(animal.getPosition(), null);
                 Cell.manageCellsBreedMap(new Vector2d(oldX, oldY),null, map);
                 animalIterator.remove();
             }

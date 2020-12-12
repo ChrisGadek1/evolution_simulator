@@ -1,6 +1,4 @@
-public class Animal {
-    private Vector2d position = new Vector2d(2,2);
-    private GrassField map;
+public class Animal extends AbstractWorldElement {
     private int energy;
     private int maxEnergy;
     private int dayOfBirth;
@@ -29,16 +27,8 @@ public class Animal {
         return moveDirection;
     }
 
-    public Vector2d getPosition(){
-        return this.position;
-    }
-
-    public void setPosition(Vector2d position){
-        this.position = position;
-    }
-
     public MoveDirection chooseNewDirection(){
-        return MoveDirection.mapIntToMove(genome[map.random.nextInt(32)]);
+        return MoveDirection.mapIntToMove(genome[this.getMap().random.nextInt(32)]);
     }
 
     public void setMoveDirection(MoveDirection moveDirection){
@@ -46,9 +36,9 @@ public class Animal {
     }
 
     public boolean move(){
-        Vector2d tmp = this.position.add(this.moveDirection.moveToVector());
-        if(this.map.canMoveTo(tmp)){
-            this.position = tmp;
+        Vector2d tmp = this.getPosition().add(this.moveDirection.moveToVector());
+        if(this.getMap().canMoveTo(tmp)){
+            this.setPosition(tmp);
             return true;
         }
         else{
@@ -56,10 +46,9 @@ public class Animal {
         }
     }
 
-
     public Animal(GrassField map, Vector2d initialPosition, int maxEnergy, int[] genome){
-        this.map = map;
-        this.position = initialPosition;
+        super(map);
+        this.setPosition(initialPosition);
         this.maxEnergy = maxEnergy;
         this.setEnergy(maxEnergy);
         this.moveDirection = MoveDirection.getRandomMove();
@@ -67,11 +56,13 @@ public class Animal {
         this.dayOfBirth = map.getDay();
     }
 
+    @Override
     void prepareBeforeAddToMap(int x, int y){
         this.setPosition(new Vector2d(x,y));
-        map.animalPositions.add(this);
+        this.getMap().animalPositions.add(this);
+        Cell.manageCellsBreedMap(null, new Vector2d(x,y), this.getMap());
         try{
-            map.cellMap.get(this.getPosition()).animals.add(this);
+            this.getMap().cellMap.get(this.getPosition()).animals.add(this);
         }catch (Exception e){
             System.out.println("nie ma takiej komórki: "+this.getPosition());
         }
@@ -85,8 +76,7 @@ public class Animal {
             worldMap.cellMap.get(grass.getPosition()).grass = null;
             int oldX = grass.getPosition().getX();
             int oldY = grass.getPosition().getY();
-            worldMap.revaluateEmptyCellsInformation(grass.getPosition(), null,map.getJungle().isCellCoordInJungle(oldX,oldY),false);
+            worldMap.revaluateEmptyCellsInformation(grass.getPosition(), null);
         }
-
     }
 }

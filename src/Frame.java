@@ -10,11 +10,10 @@ public class Frame extends JFrame {
         setResizable(true);
 
         setLocation(200,200);
-        JPanel graphics1 = new GraphicPanel(windowSize-100,0.3, 40, 50, 20, 20, 1);
+        JPanel graphics1 = new GraphicPanel(windowSize-100,0.3, 40, 50, 12, 12, 1);
         graphics1.setPreferredSize(new Dimension(graphics1.getWidth(), graphics1.getHeight()));
         setSize(new Dimension(graphics1.getWidth()+100, graphics1.getHeight()+250));
         EventObserver eventObserver = new EventObserver((GraphicPanel) graphics1);
-
 
 
         JPanel mainContainer = new JPanel();
