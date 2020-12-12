@@ -8,11 +8,10 @@ public class Frame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(true);
-
         setLocation(200,200);
-        JPanel graphics1 = new GraphicPanel(windowSize-100,0.3, 40, 50, 12, 12, 1);
+        JPanel graphics1 = new GraphicPanel(windowSize-100,0.3, 40, 50, 12, 30, 1);
         graphics1.setPreferredSize(new Dimension(graphics1.getWidth(), graphics1.getHeight()));
-        setSize(new Dimension(graphics1.getWidth()+100, graphics1.getHeight()+250));
+        setSize(new Dimension(graphics1.getWidth()+150, graphics1.getHeight()+250));
         EventObserver eventObserver = new EventObserver((GraphicPanel) graphics1);
 
 
@@ -72,12 +71,18 @@ public class Frame extends JFrame {
         JLabel averageLifeLengthLabel = new JLabel("średnia długość życia");
         JLabel averageLifeLengthNumber = new JLabel("-");
 
+        JPanel mainGenomeContainer = new JPanel();
+        JLabel mainGenomeLabel = new JLabel("dominujący genotyp");
+        JLabel mainGenomeHelpLabel = new JLabel("{numer genu = ilość genu}");
+        JLabel mainGenomeValue = new JLabel();
+
         statisticsContainer.setLayout(new BoxLayout(statisticsContainer, BoxLayout.Y_AXIS));
         statisticsContainer.setAlignmentX(Component.LEFT_ALIGNMENT);
         animalStatisticsContainer.setLayout(new FlowLayout());
         grassStatisticsContainer.setLayout(new FlowLayout());
         averageAnimalEnergyContainer.setLayout(new FlowLayout());
         averageLifeLengthContainer.setLayout(new FlowLayout());
+        mainGenomeContainer.setLayout(new FlowLayout());
 
         animalStatisticsContainer.add(animalNumberLabel);
         animalStatisticsContainer.add(animalNumber);
@@ -95,10 +100,17 @@ public class Frame extends JFrame {
         averageLifeLengthContainer.add(averageLifeLengthNumber);
         averageLifeLengthContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
+        mainGenomeContainer.add(mainGenomeLabel);
+        mainGenomeContainer.add(mainGenomeValue);
+        mainGenomeContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        mainGenomeHelpLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
         statisticsContainer.add(animalStatisticsContainer);
         statisticsContainer.add(grassStatisticsContainer);
         statisticsContainer.add(averageAnimalEnergyContainer);
         statisticsContainer.add(averageLifeLengthContainer);
+        statisticsContainer.add(mainGenomeContainer);
+        statisticsContainer.add(mainGenomeHelpLabel);
         statisticsContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 
@@ -106,12 +118,14 @@ public class Frame extends JFrame {
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setGrassNumberLabel(grassNumber);
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAverageAnimalEnergyLabel(averageAnimalEnergyNumber);
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAverageLifeLength(averageLifeLengthNumber);
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setMainGenomeLabel(mainGenomeValue);
 
 
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentNumberOfGrass();
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentNumberOfAnimals();
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentAverageAnimalEnergy();
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentAverageLifeLength();
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentMainGenome();
 
         mapContainer.add(buttonContainer);
         mapContainer.add(statisticsContainer);

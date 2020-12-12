@@ -45,13 +45,13 @@ public class GenomeGenerator {
         int secondCut = random.nextInt(31);
         int[] genome = new int[32];
         for(int i = 0; i < Math.min(firstCut,secondCut); i++){
-            genome[i] = animal1.genome[i];
+            genome[i] = animal1.genome.getGens()[i];
         }
         for(int i = Math.min(firstCut, secondCut); i < Math.max(firstCut, secondCut); i++){
-            genome[i] = animal2.genome[i];
+            genome[i] = animal2.genome.getGens()[i];
         }
         for(int i = Math.max(firstCut,secondCut); i < 32; i++){
-            genome[i] = animal1.genome[i];
+            genome[i] = animal1.genome.getGens()[i];
         }
         genome = addEliminatedGens(genome);
         return genome;

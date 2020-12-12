@@ -47,7 +47,7 @@ public class MapVisualizer {
 
    void drawBiomes(Graphics2D g){
         for(int i = 0; i < map.getWidth(); i++){
-            for (int j = 0; i < map.getHeight(); i++){
+            for (int j = 0; j < map.getHeight(); j++){
                 Vector2d position = new Vector2d(i, j);
                 g.setColor(map.cellMap.get(position).getBiome().getColor());
                 Rectangle2D.Double rectangle = new Rectangle2D.Double(i*cellSize, j*cellSize, cellSize, cellSize);

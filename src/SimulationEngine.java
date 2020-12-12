@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class SimulationEngine implements IEngine{
+public class SimulationEngine{
 
     GrassField map;
     int grassEnergy;
@@ -14,12 +14,7 @@ public class SimulationEngine implements IEngine{
     int moveEnergy;
     Random rand;
 
-    public SimulationEngine(GrassField map,
-                            int grassEnergy,
-                            int maxEnergy,
-                            int cellsWidth,
-                            int cellsHeight,
-                            int moveEnergy){
+    public SimulationEngine(GrassField map, int grassEnergy, int maxEnergy, int cellsWidth, int cellsHeight, int moveEnergy){
         this.map = map;
         this.grassEnergy = grassEnergy;
         this.maxEnergy = maxEnergy;
@@ -29,7 +24,6 @@ public class SimulationEngine implements IEngine{
         rand = new Random();
     }
 
-    @Override
     public void moveAnimals(){
         Iterator<Animal> animalPositionItr = map.animalPositions.listIterator();
         while(animalPositionItr.hasNext()){
@@ -48,7 +42,6 @@ public class SimulationEngine implements IEngine{
         }
     }
 
-    @Override
     public void animalsEatGrass() {
         for(Animal animal: map.getAnimals()){
             if(map.grassesMap.get(animal.getPosition()) != null) {
@@ -76,13 +69,11 @@ public class SimulationEngine implements IEngine{
         }
     }
 
-    @Override
     public void growGrass() {
         this.map.getJungle().placeWorldElementInBiomeInRandomPlace(new Grass(new Vector2d(0,0), this.map));
         this.map.getSavannah().placeWorldElementInBiomeInRandomPlace(new Grass(new Vector2d(0,0), this.map));
     }
 
-    @Override
     public void initSimulation(int animalInitNumber) {
         Random rand = new Random();
         for(int i = 0; i < animalInitNumber; i++){
@@ -92,7 +83,6 @@ public class SimulationEngine implements IEngine{
         }
     }
 
-    @Override
     public void loseEnergy() {
         for(Animal animal: map.getAnimals()){
             animal.setEnergy(animal.getEnergy() - this.moveEnergy);
@@ -100,7 +90,6 @@ public class SimulationEngine implements IEngine{
         }
     }
 
-    @Override
     public void removeDeadAnimals() {
         Iterator<Animal> animalIterator = map.getAnimals().listIterator();
         while(animalIterator.hasNext()){
@@ -119,7 +108,6 @@ public class SimulationEngine implements IEngine{
         }
     }
 
-    @Override
     public void breeding() {
         LinkedList<Vector2d> newAnimalPositions = new LinkedList<>();
         for (Cell cell: map.cellsReadyToBreed){

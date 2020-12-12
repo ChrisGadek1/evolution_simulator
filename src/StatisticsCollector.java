@@ -1,5 +1,7 @@
 import javax.swing.*;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class StatisticsCollector {
 
@@ -12,6 +14,7 @@ public class StatisticsCollector {
     private JLabel grassNumberLabel;
     private JLabel averageLifeLength;
     private JLabel averageAnimalEnergy;
+    private JLabel mainGenomeLabel;
     private int totalLifeLength = 0;
     private int deadAnimals = 0;
 
@@ -37,6 +40,10 @@ public class StatisticsCollector {
 
     public void setAverageLifeLength(JLabel averageLifeLength) {
         this.averageLifeLength = averageLifeLength;
+    }
+
+    public void setMainGenomeLabel(JLabel mainGenome) {
+        this.mainGenomeLabel = mainGenome;
     }
 
     public void setAnimalNumberLabel(JLabel animalNumberLabel) {
@@ -70,5 +77,23 @@ public class StatisticsCollector {
         if(this.deadAnimals != 0){
             this.averageLifeLength.setText(String.valueOf(this.totalLifeLength/this.deadAnimals));
         }
+    }
+
+    public void setCurrentMainGenome(){
+        Map<Genome, Integer> numberOfGenoms = new HashMap<>();
+        for(Animal animal: this.grassField.animalPositions){
+            if(numberOfGenoms.get(animal.getGenome()) == null) numberOfGenoms.put(animal.getGenome(), 0);
+            numberOfGenoms.put(animal.getGenome(), numberOfGenoms.get(animal.getGenome())+1);
+        }
+        Genome genome = null;
+        int number = 0;
+        for(Genome genomeIterator: numberOfGenoms.keySet()){
+            if(genomeIterator == null || numberOfGenoms.get(genomeIterator) > number){
+                genome = genomeIterator;
+                number = numberOfGenoms.get(genomeIterator);
+            }
+        }
+        if(genome == null) this.mainGenomeLabel.setText("-");
+        else this.mainGenomeLabel.setText(genome.toString());
     }
 }

@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.util.*;
 
 public class GrassField{
@@ -17,12 +16,6 @@ public class GrassField{
     LinkedList<Animal> animalPositions = new LinkedList<Animal>();
     Map<Vector2d, Grass> grassesMap = new HashMap<>();
     HashSet<Cell> cellsReadyToBreed = new HashSet<>();
-
-    public boolean isOccupied(Vector2d position) {
-        Object tmp = this.objectAt(position);
-        if(tmp == null) return false;
-        else return true;
-    }
 
     public GrassField(int grassQuantity, int width, int height, double jungleRatio){
         this.width = width;
@@ -45,7 +38,7 @@ public class GrassField{
             for(int j = 0; j < height; j++){
                 Cell newCell = new Cell(new LinkedList<Animal>(),null,i,j, this);
                 cellMap.put(new Vector2d(i,j), newCell);
-                if(j >= jungleBeginCellX && j < jungleBeginCellX + jungleWidth && i >= jungleBeginCellY && i < jungleBeginCellY + jungleHeight){
+                if(i >= jungleBeginCellX && i < jungleBeginCellX + jungleWidth && j >= jungleBeginCellY && j < jungleBeginCellY + jungleHeight){
                     cellMap.get(new Vector2d(i,j)).setBiome(jungle);
                 }
                 else{
@@ -67,14 +60,6 @@ public class GrassField{
         if(oldPosition != null) this.getCell().get(oldPosition).getBiome().revaluateEmptyCellsInformation(oldPosition, newPosition);
         if(newPosition != null) this.getCell().get(newPosition).getBiome().revaluateEmptyCellsInformation(oldPosition, newPosition);
     }
-
-
-    public Object objectAt(Vector2d position) {
-        if(cellMap.get(position).animals.size() != 0) return cellMap.get(position).animals;
-        if(cellMap.get(position).grass != null) return cellMap.get(position).grass;
-        return null;
-    }
-
 
     public Map<Vector2d, Cell> getCell() {
         return this.cellMap;

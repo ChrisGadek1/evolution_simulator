@@ -3,7 +3,7 @@ public class Animal extends AbstractWorldElement {
     private int maxEnergy;
     private int dayOfBirth;
     private MoveDirection moveDirection;
-
+    public Genome genome;
 
     public int getEnergy() {
         return energy;
@@ -21,14 +21,16 @@ public class Animal extends AbstractWorldElement {
         return dayOfBirth;
     }
 
-    public int[] genome;
+    public Genome getGenome() {
+        return genome;
+    }
 
     public MoveDirection getMoveDirection() {
         return moveDirection;
     }
 
     public MoveDirection chooseNewDirection(){
-        return MoveDirection.mapIntToMove(genome[this.getMap().random.nextInt(32)]);
+        return MoveDirection.mapIntToMove(genome.getGens()[this.getMap().random.nextInt(32)]);
     }
 
     public void setMoveDirection(MoveDirection moveDirection){
@@ -52,7 +54,7 @@ public class Animal extends AbstractWorldElement {
         this.maxEnergy = maxEnergy;
         this.setEnergy(maxEnergy);
         this.moveDirection = MoveDirection.getRandomMove();
-        this.genome = genome;
+        this.genome = new Genome(genome);
         this.dayOfBirth = map.getDay();
     }
 
@@ -74,8 +76,6 @@ public class Animal extends AbstractWorldElement {
         if(grass != null){
             worldMap.grassesMap.remove(grass.getPosition());
             worldMap.cellMap.get(grass.getPosition()).grass = null;
-            int oldX = grass.getPosition().getX();
-            int oldY = grass.getPosition().getY();
             worldMap.revaluateEmptyCellsInformation(grass.getPosition(), null);
         }
     }
