@@ -1,3 +1,5 @@
+import java.awt.*;
+
 abstract public class AbstractWorldElement {
     public AbstractWorldElement(GrassField grassField){
         this.map = grassField;
@@ -13,6 +15,10 @@ abstract public class AbstractWorldElement {
 
     private GrassField map;
     private Vector2d position;
+
+    private Shape shape;
+
+
 
     public Vector2d getPosition() {
         return position;

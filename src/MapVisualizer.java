@@ -1,7 +1,10 @@
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 public class MapVisualizer {
 
@@ -9,6 +12,7 @@ public class MapVisualizer {
     int width;
     int height;
     int cellSize;
+    Map<Vector2d, Shape> animalsOnMap = new HashMap<>();
 
     MapVisualizer(GrassField world, int width, int height){
         this.map = world;
@@ -22,7 +26,12 @@ public class MapVisualizer {
         Ellipse2D.Double circle = new Ellipse2D.Double(position.getX()*cellSize,position.getY()*cellSize,cellSize,cellSize);
         int colorLow = (int)(255 * ((double)(animal.getEnergy())/(double)(animal.getMaxEnergy())));
         int colorValue = 255 - colorLow;
-        g.setColor(new Color(Math.max(0,255-colorLow/10), Math.max(colorValue,0), Math.max(colorValue,0)));
+        if(animal.isClicked()){
+            g.setColor(new Color(66, 189, 227));
+        }
+        else{
+            g.setColor(new Color(Math.max(0,255-colorLow/10), Math.max(colorValue,0), Math.max(colorValue,0)));
+        }
         g.fill(circle);
    }
 

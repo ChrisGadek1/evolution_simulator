@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.Timer;
 
 
@@ -61,6 +63,26 @@ public class GraphicPanel extends JPanel {
         setPreferredSize(new Dimension(Math.max(this.width, 400),this.height));
         this.engine.initSimulation(10);
         this.visualizer = new MapVisualizer(this.grassField, this.width, this.height);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(!getTimer().isRunning()){
+                    int x = e.getX()/cellSize;
+                    int y = e.getY()/cellSize;
+                    Cell clickedCell = grassField.cellMap.get(new Vector2d(x,y));
+                    if(clickedCell != null && clickedCell.animals.size() > 0){
+                        if(!clickedCell.animals.get(clickedCell.animals.size()-1).isClicked()){
+                            clickedCell.animals.get(clickedCell.animals.size()-1).setClicked(true);
+                        }
+                        else{
+                            clickedCell.animals.get(clickedCell.animals.size()-1).setClicked(false);
+                        }
+                        visualizer.drawAnimal((Graphics2D) getGraphics(), clickedCell.animals.get(clickedCell.animals.size()-1));
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -68,6 +90,7 @@ public class GraphicPanel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         super.paintComponent(g);
         if(this.getTimer().isRunning() && this.canRepaint) {
+            this.engine.moveAnimals();
             this.grassField.setDay(this.grassField.getDay() + 1);
             this.engine.removeDeadAnimals();
             this.engine.animalsEatGrass();
@@ -78,7 +101,6 @@ public class GraphicPanel extends JPanel {
         this.visualizer.drawGrass(g2d);
         this.visualizer.drawAnimals(g2d);
         if(this.getTimer().isRunning() && this.canRepaint){
-            this.engine.moveAnimals();
             this.engine.breeding();
             this.grassField.getStatisticsCollector().setCurrentNumberOfAnimals();
             this.grassField.getStatisticsCollector().setCurrentNumberOfGrass();
