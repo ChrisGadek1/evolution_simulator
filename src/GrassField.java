@@ -11,6 +11,9 @@ public class GrassField{
     private StatisticsCollector statisticsCollector;
     private int day = 0;
     private GenomeGenerator genomeGenerator;
+    private Animal clickedAnimal = null;
+    boolean isHistoryFollowed = false;
+    private ClickOnPanelObserver clickObserver;
     Random random;
     Map<Vector2d, Cell> cellMap = new LinkedHashMap<>();
     LinkedList<Animal> animalPositions = new LinkedList<Animal>();
@@ -59,6 +62,14 @@ public class GrassField{
     void revaluateEmptyCellsInformation(Vector2d oldPosition, Vector2d newPosition){
         if(oldPosition != null) this.getCell().get(oldPosition).getBiome().revaluateEmptyCellsInformation(oldPosition, newPosition);
         if(newPosition != null) this.getCell().get(newPosition).getBiome().revaluateEmptyCellsInformation(oldPosition, newPosition);
+    }
+
+    public void setClickedAnimal(Animal clickedAnimal) {
+        this.clickedAnimal = clickedAnimal;
+    }
+
+    public Animal getClickedAnimal() {
+        return clickedAnimal;
     }
 
     public Map<Vector2d, Cell> getCell() {
@@ -119,6 +130,14 @@ public class GrassField{
 
     public GenomeGenerator getGenomeGenerator() {
         return genomeGenerator;
+    }
+
+    public ClickOnPanelObserver getClickObserver() {
+        return clickObserver;
+    }
+
+    public void setClickObserver(ClickOnPanelObserver clickObserver) {
+        this.clickObserver = clickObserver;
     }
 
 }

@@ -95,6 +95,10 @@ public class SimulationEngine{
         while(animalIterator.hasNext()){
             Animal animal = animalIterator.next();
             if(animal.getEnergy() == 0){
+                if(map.getClickedAnimal() != null && map.getClickedAnimal().equals(animal)){
+                    map.setClickedAnimal(null);
+                    if(!map.isHistoryFollowed) map.getClickObserver().getEventObserver().animalUnclicked();
+                }
                 StatisticsCollector stats = map.getStatisticsCollector();
                 stats.setTotalLifeLength(stats.getTotalLifeLength() + map.getDay() - animal.getDayOfBirth());
                 stats.setDeadAnimals(stats.getDeadAnimals()+1);

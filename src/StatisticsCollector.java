@@ -9,14 +9,20 @@ public class StatisticsCollector {
         this.grassField = grassField;
     }
 
+    private Animal clickedAnimal;
     private GrassField grassField;
     private JLabel animalNumberLabel;
     private JLabel grassNumberLabel;
     private JLabel averageLifeLength;
     private JLabel averageAnimalEnergy;
     private JLabel mainGenomeLabel;
+    private JLabel oneAnimalGenomeLabel;
     private int totalLifeLength = 0;
     private int deadAnimals = 0;
+
+    public void setClickedAnimal(Animal animal){
+        this.clickedAnimal = animal;
+    }
 
     public int getTotalLifeLength() {
         return totalLifeLength;
@@ -32,6 +38,10 @@ public class StatisticsCollector {
 
     public void setDeadAnimals(int deadAnimals) {
         this.deadAnimals = deadAnimals;
+    }
+
+    public void setOneAnimalGenomeLabel(JLabel oneAnimalGenomeLabel) {
+        this.oneAnimalGenomeLabel = oneAnimalGenomeLabel;
     }
 
     public void setAverageAnimalEnergyLabel(JLabel averageAnimalEnergy) {
@@ -95,5 +105,9 @@ public class StatisticsCollector {
         }
         if(genome == null) this.mainGenomeLabel.setText("-");
         else this.mainGenomeLabel.setText(genome.toString());
+    }
+
+    public void setCurrentAnimalGenome(){
+        this.oneAnimalGenomeLabel.setText(this.clickedAnimal.getGenome().toString());
     }
 }

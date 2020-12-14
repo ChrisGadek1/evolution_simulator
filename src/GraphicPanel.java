@@ -25,7 +25,10 @@ public class GraphicPanel extends JPanel {
     private SimulationEngine engine;
     private int cellSize;
     private int moveEnergy;
-    boolean canRepaint = false;
+    private boolean canRepaint = false;
+
+
+
 
     GrassField grassField;
     MapVisualizer visualizer;
@@ -61,7 +64,7 @@ public class GraphicPanel extends JPanel {
         this.grassField = new GrassField(10, cellsWidth, cellsHeight, this.jungleRatio);
         this.engine = new SimulationEngine(grassField, grassEnergy, maxEnergy, cellsWidth, cellsHeight, moveEnergy);
         setPreferredSize(new Dimension(Math.max(this.width, 400),this.height));
-        this.engine.initSimulation(10);
+        this.engine.initSimulation(30);
         this.visualizer = new MapVisualizer(this.grassField, this.width, this.height);
         addMouseListener(new MouseAdapter() {
             @Override
@@ -72,13 +75,20 @@ public class GraphicPanel extends JPanel {
                     int y = e.getY()/cellSize;
                     Cell clickedCell = grassField.cellMap.get(new Vector2d(x,y));
                     if(clickedCell != null && clickedCell.animals.size() > 0){
-                        if(!clickedCell.animals.get(clickedCell.animals.size()-1).isClicked()){
-                            clickedCell.animals.get(clickedCell.animals.size()-1).setClicked(true);
+                        Animal animal = clickedCell.animals.get(clickedCell.animals.size()-1);
+                        if(!animal.isClicked() && grassField.getClickedAnimal() == null){
+                            animal.setClicked(true);
+                            grassField.getClickObserver().getEventObserver().animalClicked(animal);
+                            grassField.getStatisticsCollector().setCurrentAnimalGenome();
+                            grassField.setClickedAnimal(animal);
                         }
-                        else{
-                            clickedCell.animals.get(clickedCell.animals.size()-1).setClicked(false);
+                        else if(animal.isClicked()){
+                            animal.setClicked(false);
+                            grassField.getClickObserver().getEventObserver().animalUnclicked();
+                            grassField.setClickedAnimal(null);
                         }
-                        visualizer.drawAnimal((Graphics2D) getGraphics(), clickedCell.animals.get(clickedCell.animals.size()-1));
+
+                        visualizer.drawAnimal((Graphics2D) getGraphics(), animal);
                     }
                 }
             }

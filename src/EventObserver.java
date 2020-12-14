@@ -1,5 +1,6 @@
 public class EventObserver {
     private GraphicPanel graphicPanel;
+    private Frame frame;
 
     public void clickedStart(){
         graphicPanel.getTimer().start();
@@ -14,8 +15,21 @@ public class EventObserver {
         else graphicPanel.getTimer().setDelay((int)(Math.pow(2,value)));
     }
 
+    public void animalClicked(Animal animal){
+        graphicPanel.grassField.getStatisticsCollector().setClickedAnimal(animal);
+        frame.mainContainer.add(frame.oneAnimalStatistics);
+        frame.mainContainer.repaint();
+        frame.revalidate();
+    }
 
-    EventObserver(GraphicPanel graphicPanel){
+    public void animalUnclicked(){
+        frame.mainContainer.remove(frame.oneAnimalStatistics);
+        frame.mainContainer.repaint();
+        frame.revalidate();
+    }
+
+    EventObserver(GraphicPanel graphicPanel, Frame frame){
+        this.frame = frame;
         this.graphicPanel = graphicPanel;
     }
 }

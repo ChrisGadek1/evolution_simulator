@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Frame extends JFrame {
+    JPanel mapContainer, mainContainer, oneAnimalStatistics;
+
     public Frame() {
         super("Evolution Simulator");
         int windowSize = 650;
@@ -9,16 +11,17 @@ public class Frame extends JFrame {
         setVisible(true);
         setResizable(true);
         setLocation(200,200);
-        JPanel graphics1 = new GraphicPanel(windowSize-100,0.3, 40, 50, 32, 30, 1);
+        JPanel graphics1 = new GraphicPanel(windowSize-100,0.3, 40, 50, 21, 20, 1);
         graphics1.setPreferredSize(new Dimension(graphics1.getWidth(), graphics1.getHeight()));
         setSize(new Dimension(graphics1.getWidth()+150, graphics1.getHeight()+250));
-        EventObserver eventObserver = new EventObserver((GraphicPanel) graphics1);
+        EventObserver eventObserver = new EventObserver((GraphicPanel) graphics1, this);
+        ClickOnPanelObserver clickObserver = new ClickOnPanelObserver(eventObserver);
+        ((GraphicPanel) graphics1).grassField.setClickObserver(clickObserver);
 
-
-        JPanel mainContainer = new JPanel();
+        this.mainContainer = new JPanel();
         mainContainer.setLayout(new FlowLayout());
 
-        JPanel mapContainer = new JPanel();
+        this.mapContainer = new JPanel();
         mapContainer.setLayout(new BoxLayout(mapContainer, BoxLayout.Y_AXIS));
         mapContainer.add(graphics1);
         JButton startButton = new JButton("start");
@@ -33,8 +36,18 @@ public class Frame extends JFrame {
         sliderContainer.add(slider);
 
         JLabel sliderLabel = new JLabel();
-        sliderLabel.setText("Change the speed of the animation");
+        sliderLabel.setText("Change the delay between frames");
         sliderContainer.add(sliderLabel);
+
+        this.oneAnimalStatistics = new JPanel();
+        oneAnimalStatistics.setLayout(new BoxLayout(oneAnimalStatistics, BoxLayout.Y_AXIS));
+        JPanel mainGenomeOfOneAnimalContainer = new JPanel();
+        JLabel mainGenomeOfOneAnimalLabel = new JLabel("genom:");
+        JLabel mainGenomeOfOneAnimalValue = new JLabel();
+        mainGenomeOfOneAnimalContainer.setLayout(new BoxLayout(mainGenomeOfOneAnimalContainer, BoxLayout.Y_AXIS));
+        oneAnimalStatistics.add(mainGenomeOfOneAnimalContainer);
+        mainGenomeOfOneAnimalContainer.add(mainGenomeOfOneAnimalLabel);
+        mainGenomeOfOneAnimalContainer.add(mainGenomeOfOneAnimalValue);
 
         //add listeners to Buttons
 
@@ -119,6 +132,7 @@ public class Frame extends JFrame {
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAverageAnimalEnergyLabel(averageAnimalEnergyNumber);
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAverageLifeLength(averageLifeLengthNumber);
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setMainGenomeLabel(mainGenomeValue);
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setOneAnimalGenomeLabel(mainGenomeOfOneAnimalValue);
 
 
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentNumberOfGrass();
@@ -126,6 +140,7 @@ public class Frame extends JFrame {
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentAverageAnimalEnergy();
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentAverageLifeLength();
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentMainGenome();
+
 
         mapContainer.add(buttonContainer);
         mapContainer.add(statisticsContainer);
