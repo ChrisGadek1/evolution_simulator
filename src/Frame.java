@@ -2,8 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Frame extends JFrame {
-    JPanel mapContainer, mainContainer, oneAnimalStatistics;
+    JPanel mapContainer, mainContainer, oneAnimalStatistics,followedAnimalNumberOfChildrenContainer,
+            followedAnimalNumberOfDescendantsContainer, followedAnimalContainer, followedAnimalDeathDayNumberContainer;
 
+    JButton stopFollowButton;
     public Frame() {
         super("Evolution Simulator");
         int windowSize = 650;
@@ -45,9 +47,42 @@ public class Frame extends JFrame {
         JLabel mainGenomeOfOneAnimalLabel = new JLabel("genom:");
         JLabel mainGenomeOfOneAnimalValue = new JLabel();
         mainGenomeOfOneAnimalContainer.setLayout(new BoxLayout(mainGenomeOfOneAnimalContainer, BoxLayout.Y_AXIS));
+        JButton followButton = new JButton("śledź historię");
         oneAnimalStatistics.add(mainGenomeOfOneAnimalContainer);
         mainGenomeOfOneAnimalContainer.add(mainGenomeOfOneAnimalLabel);
         mainGenomeOfOneAnimalContainer.add(mainGenomeOfOneAnimalValue);
+        mainGenomeOfOneAnimalContainer.add(followButton);
+
+        this.followedAnimalContainer = new JPanel();
+        this.followedAnimalContainer.setLayout(new BoxLayout(followedAnimalContainer, BoxLayout.Y_AXIS));
+
+        this.followedAnimalNumberOfChildrenContainer = new JPanel();
+        JLabel followedAnimalNumberOfChildrenDesc = new JLabel("ilość dzieci:");
+        JLabel followedAnimalNumberOfChildrenValue = new JLabel();
+
+        this.followedAnimalDeathDayNumberContainer = new JPanel();
+        followedAnimalDeathDayNumberContainer.setLayout(new FlowLayout());
+        JLabel followedAnimalDeathDayNumberDesc = new JLabel("zwierzę zmarło w epoce:");
+        JLabel followedAnimalDeathDayNumberValue = new JLabel();
+
+        followedAnimalDeathDayNumberContainer.add(followedAnimalDeathDayNumberDesc);
+        followedAnimalDeathDayNumberContainer.add(followedAnimalDeathDayNumberValue);
+
+        followedAnimalNumberOfChildrenContainer.setLayout(new FlowLayout());
+        followedAnimalNumberOfChildrenContainer.add(followedAnimalNumberOfChildrenDesc);
+        followedAnimalNumberOfChildrenContainer.add(followedAnimalNumberOfChildrenValue);
+
+        this.followedAnimalNumberOfDescendantsContainer = new JPanel();
+        JLabel followedAnimalNumberOfDescendantsDesc = new JLabel("ilość potomków");
+        JLabel followedAnimalNumberOfDescendantsValue = new JLabel();
+        this.stopFollowButton = new JButton("Zakończ śledzenie");
+
+        followedAnimalNumberOfDescendantsContainer.setLayout(new FlowLayout());
+        followedAnimalNumberOfDescendantsContainer.add(followedAnimalNumberOfDescendantsDesc);
+        followedAnimalNumberOfDescendantsContainer.add(followedAnimalNumberOfDescendantsValue);
+
+        this.followedAnimalContainer.add(followedAnimalNumberOfChildrenContainer);
+        this.followedAnimalContainer.add(followedAnimalNumberOfDescendantsContainer);
 
         //add listeners to Buttons
 
@@ -56,6 +91,19 @@ public class Frame extends JFrame {
         pauseButton.addActionListener(e -> eventObserver.clickedPause());
 
         slider.addChangeListener(e -> eventObserver.changeFPS(slider.getValue()));
+
+        followButton.addActionListener(e -> {
+            ((GraphicPanel) graphics1).grassField.getStatisticsCollector().updateAllStatistics();
+            eventObserver.startFollow();
+        });
+
+        this.stopFollowButton.addActionListener(e -> {
+            eventObserver.stopFollow();
+            if(((GraphicPanel) graphics1).grassField.getClickedAnimal() == null){
+                ((GraphicPanel) graphics1).grassField.getClickObserver().getEventObserver().animalUnclicked();
+            }
+        });
+
 
         JPanel buttonContainer = new JPanel();
         buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.X_AXIS));
@@ -133,13 +181,12 @@ public class Frame extends JFrame {
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAverageLifeLength(averageLifeLengthNumber);
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setMainGenomeLabel(mainGenomeValue);
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setOneAnimalGenomeLabel(mainGenomeOfOneAnimalValue);
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setNumberOfChildrenLabel(followedAnimalNumberOfChildrenValue);
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setNumberOfDescendantsLabel(followedAnimalNumberOfDescendantsValue);
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setDeathDayLabel(followedAnimalDeathDayNumberValue);
 
 
-        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentNumberOfGrass();
-        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentNumberOfAnimals();
-        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentAverageAnimalEnergy();
-        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentAverageLifeLength();
-        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setCurrentMainGenome();
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().updateAllStatistics();
 
 
         mapContainer.add(buttonContainer);

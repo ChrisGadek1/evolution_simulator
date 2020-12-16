@@ -112,11 +112,7 @@ public class GraphicPanel extends JPanel {
         this.visualizer.drawAnimals(g2d);
         if(this.getTimer().isRunning() && this.canRepaint){
             this.engine.breeding();
-            this.grassField.getStatisticsCollector().setCurrentNumberOfAnimals();
-            this.grassField.getStatisticsCollector().setCurrentNumberOfGrass();
-            this.grassField.getStatisticsCollector().setCurrentAverageAnimalEnergy();
-            this.grassField.getStatisticsCollector().setCurrentAverageLifeLength();
-            this.grassField.getStatisticsCollector().setCurrentMainGenome();
+            this.grassField.getStatisticsCollector().updateAllStatistics();
         }
         canRepaint = false;
     }

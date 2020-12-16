@@ -108,6 +108,13 @@ public class Cell {
             int newX = newAnimalPosition.getX();
             int newY = newAnimalPosition.getY();
             child.prepareBeforeAddToMap(newX, newY);
+            if(animal1.isClicked() || animal2.isClicked()){
+                child.setChild(true);
+                child.setDescendant(true);
+            }
+            if(animal1.isDescendant() || animal2.isDescendant()){
+                child.setDescendant(true);
+            }
             map.revaluateEmptyCellsInformation(null, child.getPosition());
             return new Vector2d(newAnimalCell.x, newAnimalCell.y);
         }

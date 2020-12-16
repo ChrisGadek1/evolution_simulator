@@ -17,8 +17,23 @@ public class StatisticsCollector {
     private JLabel averageAnimalEnergy;
     private JLabel mainGenomeLabel;
     private JLabel oneAnimalGenomeLabel;
+    private JLabel numberOfChildrenLabel;
+    private JLabel numberOfDescendantsLabel;
+    private JLabel deathDayLabel;
     private int totalLifeLength = 0;
     private int deadAnimals = 0;
+
+    public void setNumberOfChildrenLabel(JLabel numberOfChildrenLabel) {
+        this.numberOfChildrenLabel = numberOfChildrenLabel;
+    }
+
+    public void setNumberOfDescendantsLabel(JLabel numberOfDescendantsLabel) {
+        this.numberOfDescendantsLabel = numberOfDescendantsLabel;
+    }
+
+    public void setDeathDayLabel(JLabel deathDayLabel) {
+        this.deathDayLabel = deathDayLabel;
+    }
 
     public void setClickedAnimal(Animal animal){
         this.clickedAnimal = animal;
@@ -109,5 +124,39 @@ public class StatisticsCollector {
 
     public void setCurrentAnimalGenome(){
         this.oneAnimalGenomeLabel.setText(this.clickedAnimal.getGenome().toString());
+    }
+
+    public void setClickedAnimalNumberOfChildren(){
+        LinkedList<Animal> animals = this.grassField.animalPositions;
+        int childrenNumber = 0;
+        for(Animal animal: animals){
+            if(animal.isChild()) childrenNumber++;
+        }
+        this.numberOfChildrenLabel.setText(String.valueOf(childrenNumber));
+    }
+
+    public void setClickedAnimalNumberOfDescendants(){
+        LinkedList<Animal> animals = this.grassField.animalPositions;
+        int descendantsNumber = 0;
+        for(Animal animal: animals){
+            if(animal.isDescendant()) descendantsNumber++;
+        }
+        this.numberOfDescendantsLabel.setText(String.valueOf(descendantsNumber));
+    }
+
+    public void setClickedAnimalDeathDay(){
+        this.deathDayLabel.setText(String.valueOf(this.grassField.getDay()));
+    }
+
+    public void updateAllStatistics(){
+        this.setCurrentNumberOfGrass();
+        this.setCurrentNumberOfAnimals();
+        this.setCurrentAverageAnimalEnergy();
+        this.setCurrentAverageLifeLength();
+        this.setCurrentMainGenome();
+        if(this.grassField.getClickedAnimal() != null || this.grassField.isHistoryFollowed){
+            this.setClickedAnimalNumberOfChildren();
+            this.setClickedAnimalNumberOfDescendants();
+        }
     }
 }

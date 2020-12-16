@@ -4,6 +4,25 @@ public class Animal extends AbstractWorldElement {
     private int dayOfBirth;
     private MoveDirection moveDirection;
     public Genome genome;
+    private boolean isClicked;
+    private boolean isChild;
+    private boolean isDescendant;
+
+    public boolean isChild() {
+        return isChild;
+    }
+
+    public void setChild(boolean child) {
+        isChild = child;
+    }
+
+    public boolean isDescendant() {
+        return isDescendant;
+    }
+
+    public void setDescendant(boolean descendant) {
+        isDescendant = descendant;
+    }
 
     public boolean isClicked() {
         return isClicked;
@@ -12,9 +31,6 @@ public class Animal extends AbstractWorldElement {
     public void setClicked(boolean clicked) {
         isClicked = clicked;
     }
-
-    private boolean isClicked;
-
 
 
     public int getEnergy() {
