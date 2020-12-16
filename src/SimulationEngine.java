@@ -1,5 +1,4 @@
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
@@ -31,14 +30,13 @@ public class SimulationEngine{
             MoveDirection move = animal.chooseNewDirection();
             Vector2d newPosition = animal.getPosition().add(move.moveToVector());
             Vector2d oldPosition = new Vector2d(animal.getPosition());
-            if(map.canMoveTo(newPosition)){
-                map.getCell().get(newPosition).animals.add(animal);
-                map.getCell().get(animal.getPosition()).animals.remove(animal);
-                map.revaluateEmptyCellsInformation(animal.getPosition(), newPosition);
-                animal.setMoveDirection(move);
-                animal.move();
-                Cell.manageCellsBreedMap(oldPosition, newPosition,map);
-            }
+            newPosition = map.vectorToMap(newPosition);
+            map.getCell().get(newPosition).animals.add(animal);
+            map.getCell().get(animal.getPosition()).animals.remove(animal);
+            map.revaluateEmptyCellsInformation(animal.getPosition(), newPosition);
+            animal.setMoveDirection(move);
+            animal.move();
+            Cell.manageCellsBreedMap(oldPosition, newPosition,map);
         }
     }
 

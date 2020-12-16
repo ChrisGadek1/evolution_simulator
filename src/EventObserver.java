@@ -1,15 +1,28 @@
+import java.awt.*;
 import java.util.LinkedList;
 
 public class EventObserver {
     private GraphicPanel graphicPanel;
     private Frame frame;
 
+    public void showAnimalsWithDominateGenoms(){
+        this.graphicPanel.grassField.setDominateGenomViewSelected(true);
+        this.graphicPanel.getVisualizer().drawAnimals((Graphics2D) this.graphicPanel.getGraphics());
+    }
+
     public void clickedStart(){
+        this.graphicPanel.grassField.setDominateGenomViewSelected(false);
+        this.frame.buttonContainer.remove(this.frame.dominateGenomAnimalsButton);
+        this.frame.buttonContainer.repaint();
+        this.frame.validate();
         graphicPanel.getTimer().start();
     }
 
     public void clickedPause(){
         graphicPanel.getTimer().stop();
+        this.frame.buttonContainer.add(this.frame.dominateGenomAnimalsButton, 2);
+        this.frame.buttonContainer.repaint();
+        this.frame.validate();
     }
 
     public void changeFPS(int value){

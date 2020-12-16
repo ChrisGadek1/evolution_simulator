@@ -118,8 +118,14 @@ public class StatisticsCollector {
                 number = numberOfGenoms.get(genomeIterator);
             }
         }
-        if(genome == null) this.mainGenomeLabel.setText("-");
-        else this.mainGenomeLabel.setText(genome.toString());
+        if(genome == null) {
+            this.mainGenomeLabel.setText("-");
+            this.grassField.setMainGenome(null);
+        }
+        else {
+            this.mainGenomeLabel.setText(genome.toString());
+            this.grassField.setMainGenome(genome);
+        }
     }
 
     public void setCurrentAnimalGenome(){

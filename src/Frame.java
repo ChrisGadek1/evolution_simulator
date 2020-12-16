@@ -3,9 +3,10 @@ import java.awt.*;
 
 public class Frame extends JFrame {
     JPanel mapContainer, mainContainer, oneAnimalStatistics,followedAnimalNumberOfChildrenContainer,
-            followedAnimalNumberOfDescendantsContainer, followedAnimalContainer, followedAnimalDeathDayNumberContainer;
+            followedAnimalNumberOfDescendantsContainer, followedAnimalContainer, followedAnimalDeathDayNumberContainer, buttonContainer
+            ;
 
-    JButton stopFollowButton;
+    JButton stopFollowButton, dominateGenomAnimalsButton;
     public Frame() {
         super("Evolution Simulator");
         int windowSize = 650;
@@ -19,6 +20,8 @@ public class Frame extends JFrame {
         EventObserver eventObserver = new EventObserver((GraphicPanel) graphics1, this);
         ClickOnPanelObserver clickObserver = new ClickOnPanelObserver(eventObserver);
         ((GraphicPanel) graphics1).grassField.setClickObserver(clickObserver);
+
+        this.dominateGenomAnimalsButton = new JButton("genom");
 
         this.mainContainer = new JPanel();
         mainContainer.setLayout(new FlowLayout());
@@ -104,13 +107,18 @@ public class Frame extends JFrame {
             }
         });
 
+        this.dominateGenomAnimalsButton.addActionListener(e -> {
+            eventObserver.showAnimalsWithDominateGenoms();
+        });
 
-        JPanel buttonContainer = new JPanel();
+
+        this.buttonContainer = new JPanel();
         buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.X_AXIS));
         buttonContainer.setBorder(BorderFactory.createEmptyBorder(30, 10, 10, 10));
         buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
         buttonContainer.setAlignmentX(-10);
         buttonContainer.add(startButton);
+        buttonContainer.add(dominateGenomAnimalsButton);
         buttonContainer.add(pauseButton);
         buttonContainer.add(sliderContainer);
 

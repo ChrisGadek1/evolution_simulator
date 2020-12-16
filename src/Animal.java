@@ -67,13 +67,9 @@ public class Animal extends AbstractWorldElement {
 
     public boolean move(){
         Vector2d tmp = this.getPosition().add(this.moveDirection.moveToVector());
-        if(this.getMap().canMoveTo(tmp)){
-            this.setPosition(tmp);
-            return true;
-        }
-        else{
-            return false;
-        }
+        tmp = this.getMap().vectorToMap(tmp);
+        this.setPosition(tmp);
+        return true;
     }
 
     public Animal(GrassField map, Vector2d initialPosition, int maxEnergy, int[] genome){

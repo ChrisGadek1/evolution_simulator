@@ -117,4 +117,7 @@ public class GraphicPanel extends JPanel {
         canRepaint = false;
     }
 
+    public MapVisualizer getVisualizer() {
+        return visualizer;
+    }
 }

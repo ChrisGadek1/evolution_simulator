@@ -14,6 +14,8 @@ public class GrassField{
     private Animal clickedAnimal = null;
     boolean isHistoryFollowed = false;
     private ClickOnPanelObserver clickObserver;
+    private boolean isDominateGenomViewSelected;
+    private Genome mainGenome;
     Random random;
     Map<Vector2d, Cell> cellMap = new LinkedHashMap<>();
     LinkedList<Animal> animalPositions = new LinkedList<Animal>();
@@ -54,9 +56,12 @@ public class GrassField{
     }
 
 
-    public boolean canMoveTo(Vector2d position) {
-        if(position.getX() >= 0 && position.getX() < this.width && position.getY() >= 0 && position.getY() < this.height) return true;
-        else return false;
+    public Vector2d vectorToMap(Vector2d tmp) {
+        if(tmp.getY() < 0) tmp.setY(this.getHeight()-1);
+        else if(tmp.getY() >= this.getHeight()) tmp.setY(0);
+        if(tmp.getX() < 0) tmp.setX(this.getWidth()-1);
+        else if(tmp.getX() >= this.getWidth()) tmp.setX(0);
+        return tmp;
     }
 
     void revaluateEmptyCellsInformation(Vector2d oldPosition, Vector2d newPosition){
@@ -98,6 +103,22 @@ public class GrassField{
     public int[] getBounds(){
        int result[] =  {0,0,width,height};
        return result;
+    }
+
+    public boolean isDominateGenomViewSelected() {
+        return isDominateGenomViewSelected;
+    }
+
+    public void setDominateGenomViewSelected(boolean dominateGenomViewSelected) {
+        isDominateGenomViewSelected = dominateGenomViewSelected;
+    }
+
+    public Genome getMainGenome() {
+        return mainGenome;
+    }
+
+    public void setMainGenome(Genome mainGenome) {
+        this.mainGenome = mainGenome;
     }
 
     public Savannah getSavannah() {
