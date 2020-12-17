@@ -115,6 +115,10 @@ public class Cell {
             if(animal1.isDescendant() || animal2.isDescendant()){
                 child.setDescendant(true);
             }
+            Animal[] parents = new Animal[2];
+            parents[0] = animal1;
+            parents[1] = animal2;
+            child.setParents(parents);
             map.revaluateEmptyCellsInformation(null, child.getPosition());
             return new Vector2d(newAnimalCell.x, newAnimalCell.y);
         }

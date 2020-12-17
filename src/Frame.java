@@ -9,7 +9,7 @@ public class Frame extends JFrame {
     JButton stopFollowButton, dominateGenomAnimalsButton;
     public Frame() {
         super("Evolution Simulator");
-        int windowSize = 650;
+        int windowSize = 600;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(true);
@@ -140,6 +140,10 @@ public class Frame extends JFrame {
         JLabel averageLifeLengthLabel = new JLabel("średnia długość życia");
         JLabel averageLifeLengthNumber = new JLabel("-");
 
+        JPanel averageChildNumberContainer = new JPanel();
+        JLabel averageChildNumberLabel = new JLabel("średnia ilość dzieci");
+        JLabel averageChildNumberValue = new JLabel("0");
+
         JPanel mainGenomeContainer = new JPanel();
         JLabel mainGenomeLabel = new JLabel("dominujący genotyp");
         JLabel mainGenomeHelpLabel = new JLabel("{numer genu = ilość genu}");
@@ -152,6 +156,7 @@ public class Frame extends JFrame {
         averageAnimalEnergyContainer.setLayout(new FlowLayout());
         averageLifeLengthContainer.setLayout(new FlowLayout());
         mainGenomeContainer.setLayout(new FlowLayout());
+        averageChildNumberContainer.setLayout(new FlowLayout());
 
         animalStatisticsContainer.add(animalNumberLabel);
         animalStatisticsContainer.add(animalNumber);
@@ -169,6 +174,10 @@ public class Frame extends JFrame {
         averageLifeLengthContainer.add(averageLifeLengthNumber);
         averageLifeLengthContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
+        averageChildNumberContainer.add(averageChildNumberLabel);
+        averageChildNumberContainer.add(averageChildNumberValue);
+        averageChildNumberContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
         mainGenomeContainer.add(mainGenomeLabel);
         mainGenomeContainer.add(mainGenomeValue);
         mainGenomeContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -178,6 +187,7 @@ public class Frame extends JFrame {
         statisticsContainer.add(grassStatisticsContainer);
         statisticsContainer.add(averageAnimalEnergyContainer);
         statisticsContainer.add(averageLifeLengthContainer);
+        statisticsContainer.add(averageChildNumberContainer);
         statisticsContainer.add(mainGenomeContainer);
         statisticsContainer.add(mainGenomeHelpLabel);
         statisticsContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -192,6 +202,7 @@ public class Frame extends JFrame {
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setNumberOfChildrenLabel(followedAnimalNumberOfChildrenValue);
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setNumberOfDescendantsLabel(followedAnimalNumberOfDescendantsValue);
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setDeathDayLabel(followedAnimalDeathDayNumberValue);
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAverageChildNumberLabel(averageChildNumberValue);
 
 
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().updateAllStatistics();

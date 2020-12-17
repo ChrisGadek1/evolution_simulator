@@ -6,11 +6,21 @@ public class EventObserver {
     private Frame frame;
 
     public void showAnimalsWithDominateGenoms(){
-        this.graphicPanel.grassField.setDominateGenomViewSelected(true);
-        this.graphicPanel.getVisualizer().drawAnimals((Graphics2D) this.graphicPanel.getGraphics());
+        if(!this.graphicPanel.grassField.isDominateGenomViewSelected()){
+            this.graphicPanel.grassField.setDominateGenomViewSelected(true);
+            this.graphicPanel.getVisualizer().drawAnimals((Graphics2D) this.graphicPanel.getGraphics());
+            this.frame.dominateGenomAnimalsButton.setText("ukryj");
+        }
+        else{
+            this.graphicPanel.grassField.setDominateGenomViewSelected(false);
+            this.graphicPanel.getVisualizer().drawAnimals((Graphics2D) this.graphicPanel.getGraphics());
+            this.frame.dominateGenomAnimalsButton.setText("genom");
+        }
+
     }
 
     public void clickedStart(){
+        this.frame.dominateGenomAnimalsButton.setText("genom");
         this.graphicPanel.grassField.setDominateGenomViewSelected(false);
         this.frame.buttonContainer.remove(this.frame.dominateGenomAnimalsButton);
         this.frame.buttonContainer.repaint();
@@ -50,6 +60,7 @@ public class EventObserver {
 
     public void startFollow(){
         this.graphicPanel.grassField.isHistoryFollowed = true;
+        this.graphicPanel.grassField.getStatisticsCollector().updateAllStatistics();
         this.frame.oneAnimalStatistics.add(frame.followedAnimalContainer);
         this.frame.oneAnimalStatistics.add(frame.stopFollowButton);
         frame.oneAnimalStatistics.repaint();

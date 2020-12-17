@@ -30,7 +30,7 @@ public class MapVisualizer {
             g.setColor(new Color(66, 189, 227));
         }
         else if(map.isDominateGenomViewSelected() && animal.getGenome().equals(this.map.getMainGenome())){
-            g.setColor(new Color(223, 255, 41));
+            g.setColor(new Color(88, 10, 125));
         }
         else{
             g.setColor(new Color(Math.max(0,255-colorLow/10), Math.max(colorValue,0), Math.max(colorValue,0)));

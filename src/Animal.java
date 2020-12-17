@@ -7,6 +7,15 @@ public class Animal extends AbstractWorldElement {
     private boolean isClicked;
     private boolean isChild;
     private boolean isDescendant;
+    private Animal[] parents = null;
+
+    public Animal[] getParents() {
+        return parents;
+    }
+
+    public void setParents(Animal[] parents) {
+        this.parents = parents;
+    }
 
     public boolean isChild() {
         return isChild;

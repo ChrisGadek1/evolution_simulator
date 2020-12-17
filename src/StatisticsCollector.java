@@ -20,8 +20,13 @@ public class StatisticsCollector {
     private JLabel numberOfChildrenLabel;
     private JLabel numberOfDescendantsLabel;
     private JLabel deathDayLabel;
+    private JLabel averageChildNumberLabel;
     private int totalLifeLength = 0;
     private int deadAnimals = 0;
+
+    public void setAverageChildNumberLabel(JLabel averageChildNumberLabel) {
+        this.averageChildNumberLabel = averageChildNumberLabel;
+    }
 
     public void setNumberOfChildrenLabel(JLabel numberOfChildrenLabel) {
         this.numberOfChildrenLabel = numberOfChildrenLabel;
@@ -154,12 +159,38 @@ public class StatisticsCollector {
         this.deathDayLabel.setText(String.valueOf(this.grassField.getDay()));
     }
 
+
+    public void setAverageChildNumber(){
+        Map<Animal, Integer> childNumber = new HashMap<>();
+        LinkedList<Animal> animals = this.grassField.animalPositions;
+        for(Animal animal: animals){
+            if(animal.getParents() != null){
+                Animal parent1 = animal.getParents()[0];
+                Animal parent2 = animal.getParents()[1];
+                if(childNumber.get(parent1) == null) childNumber.put(parent1, 0);
+                if(childNumber.get(parent2) == null) childNumber.put(parent2, 0);
+                childNumber.put(parent1, childNumber.get(parent1)+1);
+                childNumber.put(parent2, childNumber.get(parent2)+1);
+            }
+            if(childNumber.get(animal) == null) childNumber.put(animal, 0);
+        }
+        int totalAnimalNumber = childNumber.size();
+        int totalChildNumber = 0;
+        for(Integer numberOfChildren: childNumber.values()){
+            totalChildNumber += numberOfChildren;
+        }
+        if(totalAnimalNumber != 0) this.averageChildNumberLabel.setText(String.valueOf((double)(totalChildNumber/totalAnimalNumber)));
+        else this.averageChildNumberLabel.setText("-");
+    }
+
+
     public void updateAllStatistics(){
         this.setCurrentNumberOfGrass();
         this.setCurrentNumberOfAnimals();
         this.setCurrentAverageAnimalEnergy();
         this.setCurrentAverageLifeLength();
         this.setCurrentMainGenome();
+        this.setAverageChildNumber();
         if(this.grassField.getClickedAnimal() != null || this.grassField.isHistoryFollowed){
             this.setClickedAnimalNumberOfChildren();
             this.setClickedAnimalNumberOfDescendants();
