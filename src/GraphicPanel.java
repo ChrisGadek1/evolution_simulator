@@ -27,9 +27,6 @@ public class GraphicPanel extends JPanel {
     private int moveEnergy;
     private boolean canRepaint = false;
 
-
-
-
     GrassField grassField;
     MapVisualizer visualizer;
 
@@ -37,13 +34,10 @@ public class GraphicPanel extends JPanel {
         return tm;
     }
 
-
-
     private Timer tm = new Timer(30, e -> {
         canRepaint = true;
         repaint();
     });
-
 
     public GraphicPanel(int windowSize, double jungleRatio, int grassEnergy, int maxEnergy, int cellsWidth, int cellsHeight, int moveEnergy){
         if(cellsWidth > cellsHeight){
@@ -113,6 +107,7 @@ public class GraphicPanel extends JPanel {
         if(this.getTimer().isRunning() && this.canRepaint){
             this.engine.breeding();
             this.grassField.getStatisticsCollector().updateAllStatistics();
+            this.grassField.getStatisticsCollector().saveStatistics();
         }
         canRepaint = false;
     }

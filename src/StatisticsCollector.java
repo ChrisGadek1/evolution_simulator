@@ -23,6 +23,11 @@ public class StatisticsCollector {
     private JLabel averageChildNumberLabel;
     private int totalLifeLength = 0;
     private int deadAnimals = 0;
+    private LinkedList<DailyStatistics> dailyStatistics = new LinkedList<>();
+
+    public LinkedList<DailyStatistics> getAllDailyStatistics(){
+        return this.dailyStatistics;
+    }
 
     public void setAverageChildNumberLabel(JLabel averageChildNumberLabel) {
         this.averageChildNumberLabel = averageChildNumberLabel;
@@ -179,10 +184,23 @@ public class StatisticsCollector {
         for(Integer numberOfChildren: childNumber.values()){
             totalChildNumber += numberOfChildren;
         }
-        if(totalAnimalNumber != 0) this.averageChildNumberLabel.setText(String.valueOf((double)(totalChildNumber/totalAnimalNumber)));
+        double res = (double)totalChildNumber/(double)totalAnimalNumber;
+        double scale = Math.pow(10, 3);
+        if(totalAnimalNumber != 0) this.averageChildNumberLabel.setText(String.valueOf(Math.round(res*scale)/scale));
         else this.averageChildNumberLabel.setText("-");
     }
 
+    public DailyStatistics getDailyStatistics(){
+        int animalNumber = Integer.valueOf(this.animalNumberLabel.getText());
+        int grassNumber = Integer.valueOf(this.grassNumberLabel.getText());
+        int averageEnergy = 0;
+        if(this.averageAnimalEnergy.getText() != "-") averageEnergy = Integer.valueOf(this.averageAnimalEnergy.getText());
+        int averageLifeLength = 0;
+        if(this.averageLifeLength.getText() != "-") averageLifeLength = Integer.valueOf(this.averageLifeLength.getText());
+        double averageChildNumber = Double.valueOf(this.averageChildNumberLabel.getText());
+        Genome dominatedGenome = this.grassField.getMainGenome();
+        return new DailyStatistics(animalNumber,grassNumber,averageEnergy,averageLifeLength,averageChildNumber,dominatedGenome);
+    }
 
     public void updateAllStatistics(){
         this.setCurrentNumberOfGrass();
@@ -195,5 +213,10 @@ public class StatisticsCollector {
             this.setClickedAnimalNumberOfChildren();
             this.setClickedAnimalNumberOfDescendants();
         }
+    }
+
+    public void saveStatistics(){
+        DailyStatistics dailyStatistics = this.getDailyStatistics();
+        this.dailyStatistics.push(dailyStatistics);
     }
 }

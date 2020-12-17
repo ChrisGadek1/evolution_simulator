@@ -1,25 +1,42 @@
+import com.google.gson.Gson;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 public class Frame extends JFrame {
     JPanel mapContainer, mainContainer, oneAnimalStatistics,followedAnimalNumberOfChildrenContainer,
-            followedAnimalNumberOfDescendantsContainer, followedAnimalContainer, followedAnimalDeathDayNumberContainer, buttonContainer
-            ;
-
+            followedAnimalNumberOfDescendantsContainer, followedAnimalContainer, followedAnimalDeathDayNumberContainer, buttonContainer;
     JButton stopFollowButton, dominateGenomAnimalsButton;
     public Frame() {
         super("Evolution Simulator");
+        InitialParameters parameters = null;
+        try{
+            Gson gson = new Gson();
+            String jsonContent = Files.readString(Paths.get("parameters.json"), StandardCharsets.UTF_8);
+            parameters = gson.fromJson(jsonContent, InitialParameters.class);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+            System.exit(-1);
+        }
+
         int windowSize = 600;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
         setResizable(true);
         setLocation(200,200);
-        JPanel graphics1 = new GraphicPanel(windowSize-100,0.3, 40, 50, 21, 20, 1);
+        JPanel graphics1 = new GraphicPanel(windowSize-100,parameters.getJungleRatio(), parameters.getGrassEnergy(), parameters.getMaxEnergy(), parameters.getWidth(), parameters.getHeight(), parameters.getMoveEnergy());
         graphics1.setPreferredSize(new Dimension(graphics1.getWidth(), graphics1.getHeight()));
         setSize(new Dimension(graphics1.getWidth()+150, graphics1.getHeight()+250));
         EventObserver eventObserver = new EventObserver((GraphicPanel) graphics1, this);
         ClickOnPanelObserver clickObserver = new ClickOnPanelObserver(eventObserver);
         ((GraphicPanel) graphics1).grassField.setClickObserver(clickObserver);
+        JButton generateStatisticsToFileButton = new JButton("generuj do pliku");
 
         this.dominateGenomAnimalsButton = new JButton("genom");
 
@@ -111,6 +128,9 @@ public class Frame extends JFrame {
             eventObserver.showAnimalsWithDominateGenoms();
         });
 
+        generateStatisticsToFileButton.addActionListener(e -> {
+            eventObserver.generateStatisticsToFile();
+        });
 
         this.buttonContainer = new JPanel();
         buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.X_AXIS));
@@ -183,6 +203,9 @@ public class Frame extends JFrame {
         mainGenomeContainer.setAlignmentX(Component.RIGHT_ALIGNMENT);
         mainGenomeHelpLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
+        generateStatisticsToFileButton.setAlignmentX(-10);
+
+        statisticsContainer.add(generateStatisticsToFileButton);
         statisticsContainer.add(animalStatisticsContainer);
         statisticsContainer.add(grassStatisticsContainer);
         statisticsContainer.add(averageAnimalEnergyContainer);
@@ -191,6 +214,8 @@ public class Frame extends JFrame {
         statisticsContainer.add(mainGenomeContainer);
         statisticsContainer.add(mainGenomeHelpLabel);
         statisticsContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        statisticsContainer.setMaximumSize(new Dimension(500, 9999));
+        sliderContainer.setMaximumSize(new Dimension(200, 9999));
 
 
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAnimalNumberLabel(animalNumber);
@@ -206,6 +231,7 @@ public class Frame extends JFrame {
 
 
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().updateAllStatistics();
+        ((GraphicPanel) graphics1).grassField.getStatisticsCollector().saveStatistics();
 
 
         mapContainer.add(buttonContainer);
