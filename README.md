@@ -5,7 +5,7 @@ I am pleased to introduce my project made for the OOP course. It's name is "The 
 To open my project, you need to __load Google GSON library__, which was used to parse a JSON file to a Java object. If you use the IntelIJ, you can clone my project with dependencies by one click.
 
 # How to use it?
-The GUI of The project was coded in polish language (screenshot 1). On the map, red dots represents animals, lightgreen squares represents grass. The dark green rectangle represents jungle. Despite obvious controlls, like Buttons "Start", or "Pauza", the GUI contains also "genom" Button, that colors on darkblue every animal with dominated genome.
+The GUI of The project was coded in polish language (screenshot 1). On the map, red dots represent animals, lightgreen squares represent grass. The dark green rectangle represents jungle. Despite obvious controls, like Buttons "Start", or "Pauza", the GUI contains also "genom" Button, that colors on darkblue every animal with dominated genome.
 
 Clicking on the animal triggers new Panel, where the user can see the genome of the clicked animal and has a little interface to follow this animal in the future.
 
