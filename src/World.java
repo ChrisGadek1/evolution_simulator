@@ -35,12 +35,13 @@ public class World extends JPanel{
         }
         int windowSize = 600;
         this.graphics1 = new GraphicPanel(windowSize-100,parameters);
-        graphics1.setPreferredSize(new Dimension(graphics1.getWidth(), graphics1.getHeight()));
 
         EventObserver eventObserver = new EventObserver((GraphicPanel) graphics1, this);
         ClickOnPanelObserver clickObserver = new ClickOnPanelObserver(eventObserver);
         ((GraphicPanel) graphics1).grassField.setClickObserver(clickObserver);
         JButton generateStatisticsToFileButton = new JButton("generuj do pliku");
+        JButton enlargeMap = new JButton("powiększ");
+        JButton minimize = new JButton("zmniejsz");
 
         this.dominateGenomAnimalsButton = new JButton("genom");
 
@@ -136,6 +137,14 @@ public class World extends JPanel{
             eventObserver.generateStatisticsToFile();
         });
 
+        enlargeMap.addActionListener(e -> {
+            eventObserver.enlargeMap();
+        });
+
+        minimize.addActionListener(e -> {
+            eventObserver.minimizeMap();
+        });
+
         this.buttonContainer = new JPanel();
         buttonContainer.setLayout(new BoxLayout(buttonContainer, BoxLayout.X_AXIS));
         buttonContainer.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -171,6 +180,12 @@ public class World extends JPanel{
         JLabel mainGenomeLabel = new JLabel("dominujący genotyp");
         JLabel mainGenomeHelpLabel = new JLabel("{numer genu = ilość genu}");
         JLabel mainGenomeValue = new JLabel();
+
+        JPanel secondButtonContainer = new JPanel();
+        secondButtonContainer.setLayout(new FlowLayout());
+        secondButtonContainer.add(enlargeMap);
+        secondButtonContainer.add(minimize);
+        secondButtonContainer.add(generateStatisticsToFileButton);
 
         statisticsContainer.setLayout(new BoxLayout(statisticsContainer, BoxLayout.Y_AXIS));
         statisticsContainer.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -208,7 +223,7 @@ public class World extends JPanel{
 
         generateStatisticsToFileButton.setSize(generateStatisticsToFileButton.getPreferredSize());
 
-        statisticsContainer.add(generateStatisticsToFileButton);
+        statisticsContainer.add(secondButtonContainer);
         statisticsContainer.add(animalStatisticsContainer);
         statisticsContainer.add(grassStatisticsContainer);
         statisticsContainer.add(averageAnimalEnergyContainer);
@@ -235,7 +250,7 @@ public class World extends JPanel{
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().updateAllStatistics();
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().saveStatistics();
 
-        mapContainer.setPreferredSize(new Dimension(Math.max(windowSize-100,510),260+graphics1.getHeight()));
+        mapContainer.setPreferredSize(new Dimension(Math.max(graphics1.getWidth(),510),270+graphics1.getHeight()));
 
         mapContainer.add(buttonContainer);
         mapContainer.add(statisticsContainer);

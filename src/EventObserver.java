@@ -143,4 +143,32 @@ public class EventObserver {
         this.map.followedAnimalContainer.repaint();
         this.map.revalidate();
     }
+
+    public void enlargeMap() {
+        GraphicPanel graphics1 = ((GraphicPanel)this.map.graphics1);
+        if(this.graphicPanel.getCellsWidth() > this.graphicPanel.getCellsHeight()){
+            this.graphicPanel.setWindowSize(this.graphicPanel.getWindowSize()+this.graphicPanel.getCellsWidth());
+        }
+        else{
+            this.graphicPanel.setWindowSize(this.graphicPanel.getWindowSize()+this.graphicPanel.getCellsHeight());
+        }
+        this.graphicPanel.setMapSizeInPixels();
+        this.map.mapContainer.setPreferredSize(new Dimension(Math.max(graphics1.getWidth(),510),260+graphics1.getHeight()));
+        this.graphicPanel.repaint();
+        this.graphicPanel.revalidate();
+    }
+
+    public void minimizeMap() {
+        GraphicPanel graphics1 = ((GraphicPanel)this.map.graphics1);
+        if(this.graphicPanel.getCellsWidth() > this.graphicPanel.getCellsHeight()){
+            this.graphicPanel.setWindowSize(this.graphicPanel.getWindowSize()-this.graphicPanel.getCellsWidth());
+        }
+        else {
+            this.graphicPanel.setWindowSize(this.graphicPanel.getWindowSize() - this.graphicPanel.getCellsHeight());
+        }
+        this.graphicPanel.setMapSizeInPixels();
+        this.map.mapContainer.setPreferredSize(new Dimension(Math.max(graphics1.getWidth(),510),260+graphics1.getHeight()));
+        this.graphicPanel.repaint();
+        this.graphicPanel.revalidate();
+    }
 }

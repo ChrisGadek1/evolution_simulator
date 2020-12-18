@@ -24,11 +24,12 @@ public class GraphicPanel extends JPanel {
     //height and width are initiated as number of pixels
     private int height;
     private int width;
-
+    private int cellsWidth;
+    private int cellsHeight;
     private int grassEnergy;
     private int maxEnergy;
     private SimulationEngine engine;
-
+    private int windowSize;
     //cellSize is a size of one cell in pixels
     private int cellSize;
     private int moveEnergy;
@@ -46,30 +47,37 @@ public class GraphicPanel extends JPanel {
         repaint();
     });
 
+    public void setMapSizeInPixels(){
+        if(this.cellsWidth > this.cellsHeight){
+            int rawHeight = (int)((double)(this.cellsHeight)/(double)(this.cellsWidth)*this.windowSize);
+            this.height = rawHeight - (rawHeight % this.cellsHeight);
+            this.width = this.windowSize - (this.windowSize % this.cellsWidth);
+        }
+        else{
+            int rawHeight = (int)((double)(this.cellsWidth)/(double)(this.cellsHeight)*this.windowSize);
+            this.height = this.windowSize - (this.windowSize % this.cellsHeight);
+            this.width = rawHeight - (rawHeight % this.cellsWidth);
+        }
+        this.cellSize = this.width/this.cellsWidth;
+        this.setPreferredSize(new Dimension(this.width, this.height));
+    }
+
     public GraphicPanel(int windowSize, InitialParameters parameters){
         int cellsWidth = parameters.getWidth();
         int cellsHeight = parameters.getHeight();
+        this.cellsWidth = cellsWidth;
+        this.cellsHeight = cellsHeight;
+        this.windowSize = windowSize;
         double jungleRatio = parameters.getJungleRatio();
         //computes the optimal length and height depending on initial parameters
-        if(cellsWidth > cellsHeight){
-            int rawHeight = (int)((double)(cellsHeight)/(double)(cellsWidth)*windowSize);
-            this.height = rawHeight - (rawHeight % cellsHeight);
-            this.width = windowSize - (windowSize % cellsWidth);
-        }
-        else{
-            int rawHeight = (int)((double)(cellsWidth)/(double)(cellsHeight)*windowSize);
-            this.height = windowSize - (windowSize % cellsHeight);
-            this.width = rawHeight - (rawHeight % cellsWidth);
-        }
+        setMapSizeInPixels();
         this.grassEnergy = parameters.getGrassEnergy();
         this.maxEnergy = parameters.getMaxEnergy();
         this.moveEnergy = parameters.getMoveEnergy();
-        this.cellSize = width/cellsWidth;
         this.jungleRatio = jungleRatio/(jungleRatio+1);
         this.grassField = new GrassField(10, cellsWidth, cellsHeight, this.jungleRatio, parameters);
         this.engine = new SimulationEngine(grassField, grassEnergy, maxEnergy, cellsWidth, cellsHeight, moveEnergy);
-        setPreferredSize(new Dimension(Math.max(this.width, 400),this.height));
-        this.visualizer = new MapVisualizer(this.grassField, this.width, this.height);
+        this.visualizer = new MapVisualizer(this);
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -125,6 +133,30 @@ public class GraphicPanel extends JPanel {
             this.grassField.getStatisticsCollector().saveStatistics();
         }
         canRepaint = false;
+    }
+
+    public int getCellSize() {
+        return cellSize;
+    }
+
+    public void setCellSize(int cellSize) {
+        this.cellSize = cellSize;
+    }
+
+    public int getCellsHeight() {
+        return cellsHeight;
+    }
+
+    public int getCellsWidth() {
+        return cellsWidth;
+    }
+
+    public int getWindowSize() {
+        return windowSize;
+    }
+
+    public void setWindowSize(int windowSize) {
+        this.windowSize = windowSize;
     }
 
     public SimulationEngine getEngine() {
