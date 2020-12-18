@@ -6,8 +6,10 @@ public class InitialParameters {
     private int height;
     private int moveEnergy;
     private int initialNumber;
+    private int dailyJungleGrassGrow;
+    private int dailySavannahGrassGrow;
 
-    public InitialParameters(double jungleRatio, int grassEnergy, int maxEnergy, int width, int height, int moveEnergy, int initialNumber) {
+    public InitialParameters(double jungleRatio, int grassEnergy, int maxEnergy, int width, int height, int moveEnergy, int initialNumber, int dailyJungleGrassGrow, int dailySavannahGrassGrow) {
         this.jungleRatio = jungleRatio;
         this.grassEnergy = grassEnergy;
         this.maxEnergy = maxEnergy;
@@ -15,6 +17,8 @@ public class InitialParameters {
         this.height = height;
         this.moveEnergy = moveEnergy;
         this.initialNumber = initialNumber;
+        this.dailyJungleGrassGrow = dailyJungleGrassGrow;
+        this.dailySavannahGrassGrow = dailySavannahGrassGrow;
     }
 
     public int getInitialNumber() {
@@ -43,5 +47,13 @@ public class InitialParameters {
 
     public int getMoveEnergy() {
         return moveEnergy;
+    }
+
+    public int getDailyJungleGrassGrow() {
+        return dailyJungleGrassGrow;
+    }
+
+    public int getDailySavannahGrassGrow() {
+        return dailySavannahGrassGrow;
     }
 }

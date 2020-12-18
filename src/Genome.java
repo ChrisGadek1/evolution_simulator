@@ -2,6 +2,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Object represents genome of every animal
+ * */
+
 public class Genome {
     private int[] gens;
     private Map<Integer, Integer> gensNumber = new HashMap<>();

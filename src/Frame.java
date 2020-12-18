@@ -1,9 +1,10 @@
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.LinkedList;
 
+/**
+ * Main Swing object, which stores every other component
+ * */
 
 public class Frame extends JFrame {
     JPanel mainContainer;
@@ -13,6 +14,11 @@ public class Frame extends JFrame {
     public World addNewMap(){
         JPanel world = new World();
         GraphicPanel graphicPanel = (GraphicPanel) ((World) world).graphics1;
+
+        /*
+        * we need to change the GrassFields references in every animal object
+        * from null to actual grassField in copied animals.
+        * */
         for(Animal animal: copiedAnimals){
             animal.setMap(graphicPanel.grassField);
             animal.setDayOfBirth(0);
@@ -46,6 +52,11 @@ public class Frame extends JFrame {
         World world = new World();
         GraphicPanel graphicPanel = (GraphicPanel) world.graphics1;
         graphicPanel.getEngine().initSimulation(world.getParameters().getInitialNumber());
+
+        /*
+        * next line copies the list of drawn animals to new linked to use them in potential
+        * new map chosen by the user. This is a deep copy.
+        * */
         copiedAnimals = graphicPanel.grassField.copyAnimals(null);
         world.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         this.mainWorld = world;

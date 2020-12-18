@@ -1,11 +1,14 @@
 import com.google.gson.Gson;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+/**
+ * This object represents one independent simulation environment
+ * */
 
 public class World extends JPanel{
 
@@ -17,6 +20,10 @@ public class World extends JPanel{
 
     public World(){
         parameters = null;
+
+        /*
+        * Used the external library GSon from Google to parse JSON to Java object
+        * */
         try{
             Gson gson = new Gson();
             String jsonContent = Files.readString(Paths.get("parameters.json"), StandardCharsets.UTF_8);
@@ -27,7 +34,7 @@ public class World extends JPanel{
             System.exit(-1);
         }
         int windowSize = 600;
-        this.graphics1 = new GraphicPanel(windowSize-100,parameters.getJungleRatio(), parameters.getGrassEnergy(), parameters.getMaxEnergy(), parameters.getWidth(), parameters.getHeight(), parameters.getMoveEnergy());
+        this.graphics1 = new GraphicPanel(windowSize-100,parameters);
         graphics1.setPreferredSize(new Dimension(graphics1.getWidth(), graphics1.getHeight()));
 
         EventObserver eventObserver = new EventObserver((GraphicPanel) graphics1, this);
@@ -40,6 +47,9 @@ public class World extends JPanel{
         this.mapContainer = new JPanel();
         mapContainer.setLayout(new BoxLayout(mapContainer, BoxLayout.Y_AXIS));
         mapContainer.add(graphics1);
+
+        //define all controls: panels, labels, buttons and slider
+
         JButton startButton = new JButton("start");
         JButton pauseButton = new JButton("pauza");
 
@@ -210,6 +220,7 @@ public class World extends JPanel{
         statisticsContainer.setMaximumSize(new Dimension(500, 9999));
         sliderContainer.setMaximumSize(new Dimension(200, 9999));
 
+        //send references of every statistics label to the statistics collector
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAnimalNumberLabel(animalNumber);
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setGrassNumberLabel(grassNumber);
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().setAverageAnimalEnergyLabel(averageAnimalEnergyNumber);
@@ -224,7 +235,7 @@ public class World extends JPanel{
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().updateAllStatistics();
         ((GraphicPanel) graphics1).grassField.getStatisticsCollector().saveStatistics();
 
-        mapContainer.setPreferredSize(new Dimension(Math.max(windowSize-100,510),730));
+        mapContainer.setPreferredSize(new Dimension(Math.max(windowSize-100,510),260+graphics1.getHeight()));
 
         mapContainer.add(buttonContainer);
         mapContainer.add(statisticsContainer);

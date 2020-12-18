@@ -33,28 +33,8 @@ public class Vector2d {
         return "("+this.x+","+this.y+")";
     }
 
-    public boolean precedes(Vector2d other){
-        return this.x <= other.x && this.y <= other.y;
-    }
-
-    public boolean follows(Vector2d other){
-        return this.x > other.x && this.y > other.y;
-    }
-
-    public Vector2d upperRight(Vector2d other){
-        return new Vector2d(this.x > other.x ? this.x : other.x, this.y > other.y ? this.y : other.y);
-    }
-
-    public Vector2d lowerLeft(Vector2d other){
-        return new Vector2d(this.x < other.x ? this.x : other.x, this.y < other.y ? this.y : other.y);
-    }
-
     public Vector2d add(Vector2d other){
         return new Vector2d(this.x + other.x, this.y + other.y);
-    }
-
-    public Vector2d subtract(Vector2d other){
-        return new Vector2d(this.x - other.x, this.y - other.y);
     }
 
     @Override
@@ -69,10 +49,6 @@ public class Vector2d {
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
-    }
-
-    public Vector2d opposite(){
-        return new Vector2d(-this.x, -this.y);
     }
 
 }

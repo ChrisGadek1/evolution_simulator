@@ -1,9 +1,14 @@
 import java.util.*;
 
+/**
+ * This class provides some operations on genomes
+ * */
+
 public class GenomeGenerator {
 
     Random random;
 
+    //evaluates to prevent genomes from eliminating gens
     private int[] addEliminatedGens(int[] genome){
         TreeMap<Integer, Integer> gensNumberMap = new TreeMap<>();
         for(int i = 0; i < 8; i++){

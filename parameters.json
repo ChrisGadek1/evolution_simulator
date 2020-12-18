@@ -2,8 +2,10 @@
   "jungleRatio": 0.3,
   "grassEnergy": 40,
   "maxEnergy": 50,
-  "width": 30,
-  "height": 30,
+  "width": 50,
+  "height": 50,
   "moveEnergy": 1,
-  "initialNumber": 100
+  "initialNumber": 30,
+  "dailyJungleGrassGrow": 1,
+  "dailySavannahGrassGrow": 1
 }

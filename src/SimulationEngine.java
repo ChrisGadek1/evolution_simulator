@@ -1,7 +1,10 @@
-
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
+
+/**
+ * This class implements main simulation phases
+ * */
 
 public class SimulationEngine{
 
@@ -40,6 +43,11 @@ public class SimulationEngine{
         }
     }
 
+    /*
+    * The method checks, if there are more than one animal on the cell. If so,
+    * it finds animal with the biggest quantity of energy. If more animals have the same
+    * quantity, then divides the grass energy between them
+    * */
     public void animalsEatGrass() {
         for(Animal animal: map.getAnimals()){
             if(map.grassesMap.get(animal.getPosition()) != null) {
@@ -48,10 +56,12 @@ public class SimulationEngine{
                     int maxEnergyOnCell = 0;
                     LinkedList<Animal> animalsWithMaxEnergy = new LinkedList<>();
                     Iterator<Animal> animalsOnTheCellIterator = animalsOnTheCell.listIterator();
+                    //first, find the biggest quantity of energy between animals on the cell
                     while (animalsOnTheCellIterator.hasNext()) {
                         Animal innerAnimal = animalsOnTheCellIterator.next();
                         if (innerAnimal.getEnergy() > maxEnergyOnCell) maxEnergyOnCell = innerAnimal.getEnergy();
                     }
+                    //then find the animals with the biggest quantity of energy
                     animalsOnTheCellIterator = animalsOnTheCell.listIterator();
                     while (animalsOnTheCellIterator.hasNext()) {
                         Animal innerAnimal = animalsOnTheCellIterator.next();
@@ -68,8 +78,13 @@ public class SimulationEngine{
     }
 
     public void growGrass() {
-        this.map.getJungle().placeWorldElementInBiomeInRandomPlace(new Grass(new Vector2d(0,0), this.map));
-        this.map.getSavannah().placeWorldElementInBiomeInRandomPlace(new Grass(new Vector2d(0,0), this.map));
+        for(int i = 0; i < this.map.getParameters().getDailyJungleGrassGrow(); i++){
+            this.map.getJungle().placeWorldElementInBiomeInRandomPlace(new Grass(new Vector2d(0,0), this.map));
+        }
+        for(int i = 0; i < this.map.getParameters().getDailySavannahGrassGrow(); i++){
+            this.map.getSavannah().placeWorldElementInBiomeInRandomPlace(new Grass(new Vector2d(0,0), this.map));
+        }
+
     }
 
     public void initSimulation(int animalInitNumber) {
@@ -115,6 +130,7 @@ public class SimulationEngine{
                 map.getCell().get(animal.getPosition()).animals.remove(animal);
                 int oldX = animal.getPosition().getX();
                 int oldY = animal.getPosition().getY();
+                //new position is null, because the animal is beeing removed
                 map.revaluateEmptyCellsInformation(animal.getPosition(), null);
                 Cell.manageCellsBreedMap(new Vector2d(oldX, oldY),null, map);
                 animalIterator.remove();

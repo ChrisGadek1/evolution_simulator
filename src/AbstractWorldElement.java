@@ -1,5 +1,9 @@
 import java.awt.*;
 
+/**
+ * Represent every element in a GrassField, like Grass or Animal
+ * */
+
 abstract public class AbstractWorldElement {
     public AbstractWorldElement(GrassField grassField){
         this.map = grassField;
@@ -16,9 +20,8 @@ abstract public class AbstractWorldElement {
     private GrassField map;
     private Vector2d position;
 
+    //Shape to be drawn in the GrassField
     private Shape shape;
-
-
 
     public Vector2d getPosition() {
         return position;
@@ -28,6 +31,9 @@ abstract public class AbstractWorldElement {
         this.position = position;
     }
 
+    /*
+    * This function updates information about world elements in arrays and maps
+    * */
     abstract void prepareBeforeAddToMap(int x, int y);
 
 

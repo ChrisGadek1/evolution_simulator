@@ -41,7 +41,6 @@ public enum MoveDirection {
     }
 
     public static MoveDirection getRandomMove(){
-        MoveDirection move;
         Random rand = new Random();
         int random = rand.nextInt(8);
         return mapIntToMove(random);

@@ -4,6 +4,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.Timer;
 
+/**
+ * This object represents Swing panel, where world elements will be drawn
+ * */
 
 public class GraphicPanel extends JPanel {
     private double jungleRatio;
@@ -18,11 +21,15 @@ public class GraphicPanel extends JPanel {
         return width;
     }
 
+    //height and width are initiated as number of pixels
     private int height;
     private int width;
+
     private int grassEnergy;
     private int maxEnergy;
     private SimulationEngine engine;
+
+    //cellSize is a size of one cell in pixels
     private int cellSize;
     private int moveEnergy;
     private boolean canRepaint = false;
@@ -39,7 +46,11 @@ public class GraphicPanel extends JPanel {
         repaint();
     });
 
-    public GraphicPanel(int windowSize, double jungleRatio, int grassEnergy, int maxEnergy, int cellsWidth, int cellsHeight, int moveEnergy){
+    public GraphicPanel(int windowSize, InitialParameters parameters){
+        int cellsWidth = parameters.getWidth();
+        int cellsHeight = parameters.getHeight();
+        double jungleRatio = parameters.getJungleRatio();
+        //computes the optimal length and height depending on initial parameters
         if(cellsWidth > cellsHeight){
             int rawHeight = (int)((double)(cellsHeight)/(double)(cellsWidth)*windowSize);
             this.height = rawHeight - (rawHeight % cellsHeight);
@@ -50,12 +61,12 @@ public class GraphicPanel extends JPanel {
             this.height = windowSize - (windowSize % cellsHeight);
             this.width = rawHeight - (rawHeight % cellsWidth);
         }
-        this.grassEnergy = grassEnergy;
-        this.maxEnergy = maxEnergy;
-        this.moveEnergy = moveEnergy;
+        this.grassEnergy = parameters.getGrassEnergy();
+        this.maxEnergy = parameters.getMaxEnergy();
+        this.moveEnergy = parameters.getMoveEnergy();
         this.cellSize = width/cellsWidth;
         this.jungleRatio = jungleRatio/(jungleRatio+1);
-        this.grassField = new GrassField(10, cellsWidth, cellsHeight, this.jungleRatio);
+        this.grassField = new GrassField(10, cellsWidth, cellsHeight, this.jungleRatio, parameters);
         this.engine = new SimulationEngine(grassField, grassEnergy, maxEnergy, cellsWidth, cellsHeight, moveEnergy);
         setPreferredSize(new Dimension(Math.max(this.width, 400),this.height));
         this.visualizer = new MapVisualizer(this.grassField, this.width, this.height);
@@ -69,18 +80,22 @@ public class GraphicPanel extends JPanel {
                     Cell clickedCell = grassField.cellMap.get(new Vector2d(x,y));
                     if(clickedCell != null && clickedCell.animals.size() > 0){
                         Animal animal = clickedCell.animals.get(clickedCell.animals.size()-1);
+
+                        //if the user clicked on the animal and there wasn't chosen animal
                         if(!animal.isClicked() && grassField.getClickedAnimal() == null){
                             animal.setClicked(true);
                             grassField.getClickObserver().getEventObserver().animalClicked(animal);
                             grassField.getStatisticsCollector().setCurrentAnimalGenome();
                             grassField.setClickedAnimal(animal);
                         }
+                        //if the user clicked on the already clicked animal to unclick it
                         else if(animal.isClicked()){
                             animal.setClicked(false);
                             grassField.getClickObserver().getEventObserver().animalUnclicked();
                             grassField.setClickedAnimal(null);
                         }
-
+                        //otherwise click doesn't provide any actions
+                        //next line recolors the clicked animal
                         visualizer.drawAnimal((Graphics2D) getGraphics(), animal);
                     }
                 }
@@ -90,6 +105,7 @@ public class GraphicPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        //object allows to use engine only when timer is running
         Graphics2D g2d = (Graphics2D) g;
         super.paintComponent(g);
         if(this.getTimer().isRunning() && this.canRepaint) {

@@ -1,10 +1,12 @@
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
+
+/**
+ * Class responsible for drawing map
+ * */
 
 public class MapVisualizer {
 
@@ -12,7 +14,6 @@ public class MapVisualizer {
     int width;
     int height;
     int cellSize;
-    Map<Vector2d, Shape> animalsOnMap = new HashMap<>();
 
     MapVisualizer(GrassField world, int width, int height){
         this.map = world;
@@ -21,6 +22,10 @@ public class MapVisualizer {
         this.cellSize = width/map.getBounds()[2];
     }
 
+    /*
+    * Draws animal as a circle with color dependent on the animal state and the animal energy level.
+    * Actions like clicking on the animal may change it's color
+    * */
    public void drawAnimal(Graphics2D g, Animal animal){
         Vector2d position = animal.getPosition();
         Ellipse2D.Double circle = new Ellipse2D.Double(position.getX()*cellSize,position.getY()*cellSize,cellSize,cellSize);
@@ -38,6 +43,9 @@ public class MapVisualizer {
         g.fill(circle);
    }
 
+   /*
+   * Draws grass as a light green square
+   * */
    public void drawGrass(Graphics2D graphics2D, Grass grass){
         Vector2d position = grass.getPosition();
         Rectangle2D.Double rectangle = new Rectangle2D.Double(position.getX()*cellSize,position.getY()*cellSize,cellSize,cellSize);

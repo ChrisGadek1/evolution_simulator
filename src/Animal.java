@@ -9,6 +9,10 @@ public class Animal extends AbstractWorldElement {
     private boolean isDescendant;
     private Animal[] parents = null;
 
+    /*
+    * Getters and Setters:
+    * */
+
     public void setDayOfBirth(int dayOfBirth) {
         this.dayOfBirth = dayOfBirth;
     }
@@ -70,6 +74,7 @@ public class Animal extends AbstractWorldElement {
         return moveDirection;
     }
 
+    //choose new move direction based on genome
     public MoveDirection chooseNewDirection(){
         return MoveDirection.mapIntToMove(genome.getGens()[this.getMap().random.nextInt(32)]);
     }

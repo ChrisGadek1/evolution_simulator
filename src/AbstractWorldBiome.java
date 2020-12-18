@@ -3,9 +3,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Represents every biome on map
+ * On the biome depends some factors, like the quantity of Grass grown every day
+ *
+ * */
+
 abstract public class AbstractWorldBiome {
+
+    /*
+    * Map contains XAxises mapped by their indexes, where
+    * still exist free positions
+    * */
+
     Map<Integer, XAxis> usedAxis = new HashMap<>();
+
+    /*
+    * Array contains XAxises indexes, which contains free positions to draw
+    * */
+
     ArrayList<Integer> activeAxisIndexes = new ArrayList<>();
+
+    //all XAxis stored in this array to not be deleted by the garbage collector
     XAxis XAxis[];
     GrassField map;
     Color color;
@@ -23,6 +42,12 @@ abstract public class AbstractWorldBiome {
         this.XAxis = new XAxis[map.getHeight()];
     }
 
+
+    /*
+    * After every change of position of every world element, we must check,
+    * if their previous cell is empty now (if so, we need to and this to free positions in correct XAxis)
+    * analogously if the new position was empty, we need to delete now from empty positions
+    * */
     void revaluateEmptyCellsInformation(Vector2d oldPosition, Vector2d newPosition){
         if(oldPosition != null && this.map.cellMap.get(oldPosition).getBiome() == this){
             Cell currentCell = this.map.cellMap.get(new Vector2d(oldPosition.getX(),oldPosition.getY()));
@@ -47,6 +72,13 @@ abstract public class AbstractWorldBiome {
         }
     }
 
+
+    /*
+    * Initial method, where we need to create empty XAxises depends on the biome area.
+    * F.e. suppose that the biome is rectangular and begins in (3,4) and ends in (10,9)
+    * It have XAxis with indexes: [4,5,6,7,8,9], and every XAxis has free positions at the
+    * beginning: [3,4,5,6,7,8,9,10]
+    * */
     void generateEmptyAxises(){
         for(int i = 0; i < map.getWidth(); i++){
             for(int j = 0; j < map.getHeight(); j++){
@@ -64,6 +96,9 @@ abstract public class AbstractWorldBiome {
         }
     }
 
+    /*
+    * Uses the information about free positions in every XAxis and draws one point
+    * */
     int[] getRandomFreeCoordinates(){
         int randomIndex = this.map.random.nextInt(this.activeAxisIndexes.size());
         int randomY = this.activeAxisIndexes.get(randomIndex);

@@ -4,10 +4,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Stores methods to handle events on controls
+ * */
+
 public class EventObserver {
     private GraphicPanel graphicPanel;
     private World map;
 
+    //handle click on button "genom"
     public void showAnimalsWithDominateGenoms(){
         if(!this.graphicPanel.grassField.isDominateGenomViewSelected()){
             this.graphicPanel.grassField.setDominateGenomViewSelected(true);
@@ -22,6 +27,7 @@ public class EventObserver {
 
     }
 
+    //handle click on button "generuj do pliku"
     public void generateStatisticsToFile(){
         int fileNumber = 1;
         String path = "statisticsFile";
@@ -131,6 +137,7 @@ public class EventObserver {
         map.revalidate();
     }
 
+    //evaluates when the animal was followed and died
     public void showDeathInformation(){
         this.map.followedAnimalContainer.add(map.followedAnimalDeathDayNumberContainer);
         this.map.followedAnimalContainer.repaint();

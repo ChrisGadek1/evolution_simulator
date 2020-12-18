@@ -14,7 +14,6 @@ public class Cell {
     }
 
     public AbstractWorldBiome biome;
-
     int x;
     int y;
     Grass grass;
@@ -80,6 +79,9 @@ public class Cell {
         return null;
     }
 
+    /*
+    * Updates information about cells, which contains more than one animal
+    * */
     static void manageCellsBreedMap(Vector2d oldPosition, Vector2d newPosition, GrassField map){
         if(newPosition != null && map.getCell().get(newPosition).animals.size() > 1){
             map.cellsReadyToBreed.add(map.getCell().get(newPosition));
@@ -91,6 +93,7 @@ public class Cell {
     }
 
     Vector2d breed(){
+        //choose the animals with the biggest quantity of energy
         animals.sort(new AnimalsComparator());
         Animal animal1 = animals.get(0);
         Animal animal2 = animals.get(1);

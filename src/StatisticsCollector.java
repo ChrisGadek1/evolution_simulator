@@ -3,6 +3,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+/**
+ * This class stores references to every swing label, that shows statistics
+ * and provides method to update this statistics. It also stores the daily statistics
+ * of every day of simulation
+ * */
+
 public class StatisticsCollector {
 
     public StatisticsCollector(GrassField grassField) {

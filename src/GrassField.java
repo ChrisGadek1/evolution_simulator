@@ -1,5 +1,9 @@
 import java.util.*;
 
+/**
+ * Class that represent the map
+ * */
+
 public class GrassField{
 
     private int grassQuantity;
@@ -16,13 +20,19 @@ public class GrassField{
     private ClickOnPanelObserver clickObserver;
     private boolean isDominateGenomViewSelected;
     private Genome mainGenome;
+    private InitialParameters parameters;
     Random random;
+
+
     Map<Vector2d, Cell> cellMap = new LinkedHashMap<>();
     LinkedList<Animal> animalPositions = new LinkedList<Animal>();
     Map<Vector2d, Grass> grassesMap = new HashMap<>();
+
+    //The cell is ready to breed when it contains two animals or more
     HashSet<Cell> cellsReadyToBreed = new HashSet<>();
 
-    public GrassField(int grassQuantity, int width, int height, double jungleRatio){
+    public GrassField(int grassQuantity, int width, int height, double jungleRatio, InitialParameters parameters){
+        this.parameters = parameters;
         this.width = width;
         this.height = height;
         Random random = new Random();
@@ -34,6 +44,9 @@ public class GrassField{
         this.jungle = new Jungle(this);
         this.savannah = new Savannah(this);
 
+        /* computes the jungle parameters to place the jungle as a rectangle
+        * in the middle of the map
+        * */
         int jungleWidth = (int)(width*Math.sqrt(this.jungleRatio));
         int jungleHeight = (int)(height*Math.sqrt(this.jungleRatio));
         int jungleBeginCellX = (width-jungleWidth)/2;
@@ -41,8 +54,10 @@ public class GrassField{
 
         for(int i = 0; i < width; i++){
             for(int j = 0; j < height; j++){
+                //fills the cellMap with information
                 Cell newCell = new Cell(new LinkedList<Animal>(),null,i,j, this);
                 cellMap.put(new Vector2d(i,j), newCell);
+                //set the cells biome information depending on the jungle width and height
                 if(i >= jungleBeginCellX && i < jungleBeginCellX + jungleWidth && j >= jungleBeginCellY && j < jungleBeginCellY + jungleHeight){
                     cellMap.get(new Vector2d(i,j)).setBiome(jungle);
                 }
@@ -56,6 +71,9 @@ public class GrassField{
     }
 
 
+    /* if some world element (animal) would like to go out of the map
+    * this method prevents from NullPointerException and returns it to the map
+    * */
     public Vector2d vectorToMap(Vector2d tmp) {
         if(tmp.getY() < 0) tmp.setY(this.getHeight()-1);
         else if(tmp.getY() >= this.getHeight()) tmp.setY(0);
@@ -68,6 +86,19 @@ public class GrassField{
         if(oldPosition != null) this.getCell().get(oldPosition).getBiome().revaluateEmptyCellsInformation(oldPosition, newPosition);
         if(newPosition != null) this.getCell().get(newPosition).getBiome().revaluateEmptyCellsInformation(oldPosition, newPosition);
     }
+
+
+
+    public LinkedList<Animal> copyAnimals(GrassField grassField){
+        LinkedList<Animal> copiedAnimals = new LinkedList<>();
+        for(Animal animal: this.animalPositions){
+            Animal copiedAnimal = new Animal(grassField,new Vector2d(animal.getPosition()), animal.getMaxEnergy(), animal.getGenome().copyGenome().getGens());
+            copiedAnimals.push(copiedAnimal);
+        }
+        return copiedAnimals;
+    }
+
+    //getters and setters:
 
     public void setClickedAnimal(Animal clickedAnimal) {
         this.clickedAnimal = clickedAnimal;
@@ -85,16 +116,6 @@ public class GrassField{
     public LinkedList<Animal> getAnimals() {
         return this.animalPositions;
     }
-
-    public LinkedList<Animal> copyAnimals(GrassField grassField){
-        LinkedList<Animal> copiedAnimals = new LinkedList<>();
-        for(Animal animal: this.animalPositions){
-            Animal copiedAnimal = new Animal(grassField,new Vector2d(animal.getPosition()), animal.getMaxEnergy(), animal.getGenome().copyGenome().getGens());
-            copiedAnimals.push(copiedAnimal);
-        }
-        return copiedAnimals;
-    }
-
 
     public Map<Vector2d, Grass> getGrassesMap() {
         return this.grassesMap;
@@ -170,4 +191,7 @@ public class GrassField{
         this.clickObserver = clickObserver;
     }
 
+    public InitialParameters getParameters() {
+        return parameters;
+    }
 }
