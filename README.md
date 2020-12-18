@@ -18,5 +18,8 @@ Initial parameters are saved in __parameters.json__ file and can be modified
 ![alt text](/screenshots/screenshot1.png)
 The main screen with showing animals with the main genome and following one of the animals.
 
+![alt text](/screenshots/screenshot3.png)
+Maps with identical initial parameters and identical animals with the same genomes.
+
 ![alt text](/screenshots/screenshot2.png)
 two independent maps with different options launched.
