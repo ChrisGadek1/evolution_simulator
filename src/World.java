@@ -231,8 +231,7 @@ public class World extends JPanel{
         statisticsContainer.add(averageChildNumberContainer);
         statisticsContainer.add(mainGenomeContainer);
         statisticsContainer.add(mainGenomeHelpLabel);
-        statisticsContainer.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        statisticsContainer.setMaximumSize(new Dimension(500, 9999));
+        statisticsContainer.setPreferredSize(new Dimension(550, 200));
         sliderContainer.setMaximumSize(new Dimension(200, 9999));
 
         //send references of every statistics label to the statistics collector
