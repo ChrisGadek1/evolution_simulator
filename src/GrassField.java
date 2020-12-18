@@ -86,6 +86,15 @@ public class GrassField{
         return this.animalPositions;
     }
 
+    public LinkedList<Animal> copyAnimals(GrassField grassField){
+        LinkedList<Animal> copiedAnimals = new LinkedList<>();
+        for(Animal animal: this.animalPositions){
+            Animal copiedAnimal = new Animal(grassField,new Vector2d(animal.getPosition()), animal.getMaxEnergy(), animal.getGenome().copyGenome().getGens());
+            copiedAnimals.push(copiedAnimal);
+        }
+        return copiedAnimals;
+    }
+
 
     public Map<Vector2d, Grass> getGrassesMap() {
         return this.grassesMap;

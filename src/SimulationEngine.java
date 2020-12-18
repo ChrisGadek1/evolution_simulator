@@ -81,6 +81,12 @@ public class SimulationEngine{
         }
     }
 
+    public void initSimulation(LinkedList<Animal> animals){
+        for(Animal animal: animals){
+            this.map.getJungle().placeWorldElementInBiome(animal);
+        }
+    }
+
     public void loseEnergy() {
         for(Animal animal: map.getAnimals()){
             animal.setEnergy(animal.getEnergy() - this.moveEnergy);

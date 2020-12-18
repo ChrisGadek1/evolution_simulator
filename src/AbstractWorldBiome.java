@@ -89,4 +89,17 @@ abstract public class AbstractWorldBiome {
         }
     }
 
+    boolean placeWorldElementInBiome(AbstractWorldElement element){
+        int x = element.getPosition().getX();
+        int y = element.getPosition().getY();
+        if(this.activeAxisIndexes.contains(y) && XAxis[y].freePositions.contains(x)){
+            element.prepareBeforeAddToMap(x,y);
+            revaluateEmptyCellsInformation(null, element.getPosition());
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }

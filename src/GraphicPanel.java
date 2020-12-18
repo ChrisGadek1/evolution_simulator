@@ -58,7 +58,6 @@ public class GraphicPanel extends JPanel {
         this.grassField = new GrassField(10, cellsWidth, cellsHeight, this.jungleRatio);
         this.engine = new SimulationEngine(grassField, grassEnergy, maxEnergy, cellsWidth, cellsHeight, moveEnergy);
         setPreferredSize(new Dimension(Math.max(this.width, 400),this.height));
-        this.engine.initSimulation(30);
         this.visualizer = new MapVisualizer(this.grassField, this.width, this.height);
         addMouseListener(new MouseAdapter() {
             @Override
@@ -110,6 +109,10 @@ public class GraphicPanel extends JPanel {
             this.grassField.getStatisticsCollector().saveStatistics();
         }
         canRepaint = false;
+    }
+
+    public SimulationEngine getEngine() {
+        return engine;
     }
 
     public MapVisualizer getVisualizer() {

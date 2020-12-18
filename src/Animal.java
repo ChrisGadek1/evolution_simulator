@@ -9,6 +9,10 @@ public class Animal extends AbstractWorldElement {
     private boolean isDescendant;
     private Animal[] parents = null;
 
+    public void setDayOfBirth(int dayOfBirth) {
+        this.dayOfBirth = dayOfBirth;
+    }
+
     public Animal[] getParents() {
         return parents;
     }
@@ -88,7 +92,7 @@ public class Animal extends AbstractWorldElement {
         this.setEnergy(maxEnergy);
         this.moveDirection = MoveDirection.getRandomMove();
         this.genome = new Genome(genome);
-        this.dayOfBirth = map.getDay();
+        if(map != null) this.dayOfBirth = map.getDay();
     }
 
     @Override

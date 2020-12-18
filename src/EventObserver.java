@@ -6,18 +6,18 @@ import java.util.*;
 
 public class EventObserver {
     private GraphicPanel graphicPanel;
-    private Frame frame;
+    private World map;
 
     public void showAnimalsWithDominateGenoms(){
         if(!this.graphicPanel.grassField.isDominateGenomViewSelected()){
             this.graphicPanel.grassField.setDominateGenomViewSelected(true);
             this.graphicPanel.getVisualizer().drawAnimals((Graphics2D) this.graphicPanel.getGraphics());
-            this.frame.dominateGenomAnimalsButton.setText("ukryj");
+            this.map.dominateGenomAnimalsButton.setText("ukryj");
         }
         else{
             this.graphicPanel.grassField.setDominateGenomViewSelected(false);
             this.graphicPanel.getVisualizer().drawAnimals((Graphics2D) this.graphicPanel.getGraphics());
-            this.frame.dominateGenomAnimalsButton.setText("genom");
+            this.map.dominateGenomAnimalsButton.setText("genom");
         }
 
     }
@@ -69,19 +69,19 @@ public class EventObserver {
     }
 
     public void clickedStart(){
-        this.frame.dominateGenomAnimalsButton.setText("genom");
+        this.map.dominateGenomAnimalsButton.setText("genom");
         this.graphicPanel.grassField.setDominateGenomViewSelected(false);
-        this.frame.buttonContainer.remove(this.frame.dominateGenomAnimalsButton);
-        this.frame.buttonContainer.repaint();
-        this.frame.validate();
+        this.map.buttonContainer.remove(this.map.dominateGenomAnimalsButton);
+        this.map.buttonContainer.repaint();
+        this.map.validate();
         graphicPanel.getTimer().start();
     }
 
     public void clickedPause(){
         graphicPanel.getTimer().stop();
-        this.frame.buttonContainer.add(this.frame.dominateGenomAnimalsButton, 2);
-        this.frame.buttonContainer.repaint();
-        this.frame.validate();
+        this.map.buttonContainer.add(this.map.dominateGenomAnimalsButton, 2);
+        this.map.buttonContainer.repaint();
+        this.map.validate();
     }
 
     public void changeFPS(int value){
@@ -91,30 +91,30 @@ public class EventObserver {
 
     public void animalClicked(Animal animal){
         graphicPanel.grassField.getStatisticsCollector().setClickedAnimal(animal);
-        frame.mainContainer.add(frame.oneAnimalStatistics);
-        frame.mainContainer.repaint();
-        frame.revalidate();
+        map.add(map.oneAnimalStatistics);
+        map.repaint();
+        map.revalidate();
     }
 
     public void animalUnclicked(){
         this.stopFollow();
-        frame.mainContainer.remove(frame.oneAnimalStatistics);
-        frame.mainContainer.repaint();
-        frame.revalidate();
+        map.remove(map.oneAnimalStatistics);
+        map.repaint();
+        map.revalidate();
     }
 
-    EventObserver(GraphicPanel graphicPanel, Frame frame){
-        this.frame = frame;
+    EventObserver(GraphicPanel graphicPanel, World map){
+        this.map = map;
         this.graphicPanel = graphicPanel;
     }
 
     public void startFollow(){
         this.graphicPanel.grassField.isHistoryFollowed = true;
         this.graphicPanel.grassField.getStatisticsCollector().updateAllStatistics();
-        this.frame.oneAnimalStatistics.add(frame.followedAnimalContainer);
-        this.frame.oneAnimalStatistics.add(frame.stopFollowButton);
-        frame.oneAnimalStatistics.repaint();
-        frame.revalidate();
+        this.map.oneAnimalStatistics.add(map.followedAnimalContainer);
+        this.map.oneAnimalStatistics.add(map.stopFollowButton);
+        map.oneAnimalStatistics.repaint();
+        map.revalidate();
     }
 
     public void stopFollow(){
@@ -123,17 +123,17 @@ public class EventObserver {
             animal.setChild(false);
             animal.setDescendant(false);
         }
-        this.frame.followedAnimalContainer.remove(frame.followedAnimalDeathDayNumberContainer);
+        this.map.followedAnimalContainer.remove(map.followedAnimalDeathDayNumberContainer);
         this.graphicPanel.grassField.isHistoryFollowed = false;
-        this.frame.oneAnimalStatistics.remove(frame.followedAnimalContainer);
-        this.frame.oneAnimalStatistics.remove(frame.stopFollowButton);
-        frame.oneAnimalStatistics.repaint();
-        frame.revalidate();
+        this.map.oneAnimalStatistics.remove(map.followedAnimalContainer);
+        this.map.oneAnimalStatistics.remove(map.stopFollowButton);
+        map.oneAnimalStatistics.repaint();
+        map.revalidate();
     }
 
     public void showDeathInformation(){
-        this.frame.followedAnimalContainer.add(frame.followedAnimalDeathDayNumberContainer);
-        this.frame.followedAnimalContainer.repaint();
-        this.frame.revalidate();
+        this.map.followedAnimalContainer.add(map.followedAnimalDeathDayNumberContainer);
+        this.map.followedAnimalContainer.repaint();
+        this.map.revalidate();
     }
 }

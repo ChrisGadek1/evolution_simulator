@@ -197,8 +197,10 @@ public class StatisticsCollector {
         if(this.averageAnimalEnergy.getText() != "-") averageEnergy = Integer.valueOf(this.averageAnimalEnergy.getText());
         int averageLifeLength = 0;
         if(this.averageLifeLength.getText() != "-") averageLifeLength = Integer.valueOf(this.averageLifeLength.getText());
-        double averageChildNumber = Double.valueOf(this.averageChildNumberLabel.getText());
-        Genome dominatedGenome = this.grassField.getMainGenome();
+        double averageChildNumber = 0;
+        if(this.averageChildNumberLabel.getText() != "-") averageChildNumber = Double.valueOf(this.averageChildNumberLabel.getText());
+        Genome dominatedGenome = null;
+        if(this.mainGenomeLabel.getText() != "-") dominatedGenome = this.grassField.getMainGenome();
         return new DailyStatistics(animalNumber,grassNumber,averageEnergy,averageLifeLength,averageChildNumber,dominatedGenome);
     }
 

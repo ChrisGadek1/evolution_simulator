@@ -2,7 +2,8 @@
   "jungleRatio": 0.3,
   "grassEnergy": 40,
   "maxEnergy": 50,
-  "width": 21,
-  "height": 25,
-  "moveEnergy": 1
+  "width": 30,
+  "height": 30,
+  "moveEnergy": 1,
+  "initialNumber": 100
 }

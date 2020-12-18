@@ -18,6 +18,10 @@ public class Genome {
         return this.gens;
     }
 
+    public Genome copyGenome(){
+        return new Genome(this.gens.clone());
+    }
+
     @Override
     public String toString(){
         return this.gensNumber.toString();
